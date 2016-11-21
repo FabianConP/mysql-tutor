@@ -42,6 +42,14 @@ PRIMARY
     : 'primary'
     ;
 
+AUTO
+    : 'auto'
+    ;
+
+INCREMENT
+    : 'increment'
+    ;
+
 DROP
     : 'drop'
     ;

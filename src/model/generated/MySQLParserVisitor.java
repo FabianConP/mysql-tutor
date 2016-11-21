@@ -47,6 +47,30 @@ public interface MySQLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitColumn_definition(MySQLParser.Column_definitionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MySQLParser#column_list_attributes}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitColumn_list_attributes(MySQLParser.Column_list_attributesContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MySQLParser#column_attribute}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitColumn_attribute(MySQLParser.Column_attributeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MySQLParser#table_list_constraints}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTable_list_constraints(MySQLParser.Table_list_constraintsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MySQLParser#table_constraint}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTable_constraint(MySQLParser.Table_constraintContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MySQLParser#drop_table_clause}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

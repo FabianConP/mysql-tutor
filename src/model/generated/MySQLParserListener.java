@@ -68,6 +68,46 @@ public interface MySQLParserListener extends ParseTreeListener {
 	 */
 	void exitColumn_definition(MySQLParser.Column_definitionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MySQLParser#column_list_attributes}.
+	 * @param ctx the parse tree
+	 */
+	void enterColumn_list_attributes(MySQLParser.Column_list_attributesContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MySQLParser#column_list_attributes}.
+	 * @param ctx the parse tree
+	 */
+	void exitColumn_list_attributes(MySQLParser.Column_list_attributesContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MySQLParser#column_attribute}.
+	 * @param ctx the parse tree
+	 */
+	void enterColumn_attribute(MySQLParser.Column_attributeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MySQLParser#column_attribute}.
+	 * @param ctx the parse tree
+	 */
+	void exitColumn_attribute(MySQLParser.Column_attributeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MySQLParser#table_list_constraints}.
+	 * @param ctx the parse tree
+	 */
+	void enterTable_list_constraints(MySQLParser.Table_list_constraintsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MySQLParser#table_list_constraints}.
+	 * @param ctx the parse tree
+	 */
+	void exitTable_list_constraints(MySQLParser.Table_list_constraintsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MySQLParser#table_constraint}.
+	 * @param ctx the parse tree
+	 */
+	void enterTable_constraint(MySQLParser.Table_constraintContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MySQLParser#table_constraint}.
+	 * @param ctx the parse tree
+	 */
+	void exitTable_constraint(MySQLParser.Table_constraintContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MySQLParser#drop_table_clause}.
 	 * @param ctx the parse tree
 	 */

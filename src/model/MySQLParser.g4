@@ -27,7 +27,7 @@ column_list_definition
     ;
 
 column_definition
-    : table_name data_type column_list_attributes
+    : column_name data_type column_list_attributes
     ;
 
 column_list_attributes
@@ -35,7 +35,7 @@ column_list_attributes
     ;
 
 column_attribute
-    : NOT NULL
+    : NOT NULL | AUTO INCREMENT
     ;
 
 table_list_constraints

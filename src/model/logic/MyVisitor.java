@@ -7,6 +7,7 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
 
     @Override
     public T visitSelect_clause(MySQLParser.Select_clauseContext ctx) {
+        System.out.println("encontre un select");
         return super.visitSelect_clause(ctx);
     }
 
