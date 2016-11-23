@@ -20,28 +20,7 @@ public class MySQLTutor extends Application {
     private Stage primaryStage;
     private BorderPane rootLayout;
 
-    private ObservableList<Field> data = FXCollections.observableArrayList();
-
     public MySQLTutor() {
-    	ArrayList<String> temp = new ArrayList<>();
-    	temp.add("Milder");
-    	temp.add("Hernandez");
-        temp.add("milderhc");
-
-        //Add some sample data
-    	data.add(new Field(temp));
-    	data.add(new Field(temp));
-    	data.add(new Field(temp));
-    	data.add(new Field(temp));
-    	data.add(new Field(temp));
-    }
-
-    /**
-     * Returns the data as an observable list of Persons.
-     * @return
-     */
-    public ObservableList<Field> getData() {
-        return data;
     }
 
     @Override
@@ -89,6 +68,18 @@ public class MySQLTutor extends Application {
             columnNames.add("id");
             columnNames.add("name");
             columnNames.add("lel");
+            
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add("Milder");
+            temp.add("Hernandez");
+            temp.add("milderhc");
+
+            ObservableList<Field> data = FXCollections.observableArrayList();
+            data.add(new Field(temp));
+            data.add(new Field(temp));
+            data.add(new Field(temp));
+            data.add(new Field(temp));
+            data.add(new Field(temp));
 
             controller.setup(columnNames, data);
         } catch (IOException e) {
