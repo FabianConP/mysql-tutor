@@ -12,37 +12,37 @@ import javafx.util.Callback;
 
 import java.util.ArrayList;
 import app.model.*;
+import model.logic.Interpreter;
 
 public class SelectController {
+    
     @FXML
-    private TableView<Field> personTable;
-
-    private ArrayList<TableColumn<Field, String>> columns;
+    private TableView<Field> crossTable;
+    private TableManagement crossTableManagement;
+    
+    @FXML
+    private TableView<Field> finalTable;
+    private TableManagement finalTableManagement;
 
     public SelectController() {
-    	columns = new ArrayList<TableColumn<Field,String> >();
     }
-
-    public void setup (ArrayList<String> columnNames,
-    		ObservableList<Field> data) {
-    	//Clears the current columns
-    	personTable.getColumns().removeAll(columns);
-
-    	for ( String name : columnNames ) {
-            columns.add(new TableColumn<>(name));
-    	}
-
-    	personTable.getColumns().addAll(columns);
-
-    	int i = 0;
-    	for ( TableColumn<Field,String> col : columns ) {
-            col.setCellValueFactory(cellData -> cellData.getValue().getColumnProperty());
-    	}
-
-        personTable.setItems(data);
+    
+    public TableManagement getCrossTableManagement () {
+        return crossTableManagement;
+    }
+    
+    public TableManagement getFinalTableManagement () {
+        return finalTableManagement;
     }
 
     @FXML
     private void initialize() {
+        crossTableManagement = new TableManagement(crossTable);
+        finalTableManagement = new TableManagement(finalTable);
+    }
+    
+    @FXML
+    private void runCommand () {
+        Interpreter.runCommand("create table usuario (id int, edad int)");
     }
 }

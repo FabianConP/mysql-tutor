@@ -1,5 +1,6 @@
 package model.logic;
 
+import app.MySQLTutor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -51,6 +52,7 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
         } catch (Exception ex) {
            // Throw new exception, inserting into 'tableName'
         }
+        
         return super.visitInsert_clause(ctx);
     }
 
@@ -67,6 +69,8 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
 
     @Override
     public T visitCreate_clause(MySQLParser.Create_clauseContext ctx) {
+        System.out.println("Creation");
+        
         boolean ifNotExists = ctx.IF() != null;
         String tableName = ctx.table_name().getText();
         boolean tableExists = tables.containsKey(tableName);

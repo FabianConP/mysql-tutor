@@ -14,22 +14,35 @@ import javafx.stage.Stage;
 
 import app.model.*;
 import app.view.SelectController;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.generated.MySQLLexer;
+import model.generated.MySQLParser;
+import model.logic.MyVisitor;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 public class MySQLTutor extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
+    public static MySQLTutor tutor;
 
     public MySQLTutor() {
+        tutor = this;
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws FileNotFoundException, IOException {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("MySQLTutor");
 
         initRootLayout();
-        showSelect();
+        showSelect();       
     }
 
     /**
@@ -59,29 +72,30 @@ public class MySQLTutor extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MySQLTutor.class.getResource("view/Select.fxml"));
             AnchorPane selectOverview = (AnchorPane) loader.load();
-
             rootLayout.setCenter(selectOverview);
 
-            SelectController controller = loader.getController();
-
+            //Dummy data
             ArrayList<String> columnNames = new ArrayList<>();
             columnNames.add("id");
             columnNames.add("name");
             columnNames.add("lel");
-            
             ArrayList<String> temp = new ArrayList<>();
             temp.add("Milder");
             temp.add("Hernandez");
             temp.add("milderhc");
-
             ObservableList<Field> data = FXCollections.observableArrayList();
             data.add(new Field(temp));
             data.add(new Field(temp));
             data.add(new Field(temp));
             data.add(new Field(temp));
             data.add(new Field(temp));
+            
 
-            controller.setup(columnNames, data);
+            SelectController controller = loader.getController();
+            
+            controller.getCrossTableManagement().setup(columnNames, data);
+            controller.getFinalTableManagement().setup(columnNames, data);
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -94,8 +108,14 @@ public class MySQLTutor extends Application {
     public Stage getPrimaryStage() {
         return primaryStage;
     }
+    
+    public void getCommand () {
+        System.out.println("kjshdf");
+    }
+    
+    
 
-    public static void main(String[] args) {
-        launch(args);
+    public static void main(String[] args) throws FileNotFoundException, IOException {       
+        launch(args);      
     }
 }
