@@ -48,6 +48,11 @@ public class Column {
     public void setAutoIncrement(boolean autoIncrement) {
         this.autoIncrement = autoIncrement;
     }
+
+    @Override
+    protected Object clone(){
+        return (Object) new Column(name, type, nullable, autoIncrement);
+    }
     
     
 

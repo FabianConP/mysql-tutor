@@ -1,8 +1,11 @@
 package model.logic;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Table {
 
@@ -10,6 +13,8 @@ public class Table {
     private List<Object[]> data;
 
     public Table() {
+        def = new TableDefinition();
+        data = new ArrayList<>();
     }
 
     public Table(TableDefinition def) {
@@ -102,7 +107,56 @@ public class Table {
             // Throw exception on column colDef.getName()
         }
     }
-    
-    
+
+    public Map<String, Object> getRowAsMap(int index) {
+        if (index < 0 || index >= data.size())
+            ; // Throw new index out of bounds exception
+
+        Map<String, Object> map = new HashMap<>();
+        Object[] row = data.get(index);
+
+        for (int i = 0; i < def.getColumns().size(); i++)
+            map.put(def.getColumns().get(i).getName(), row[i]);
+
+        return map;
+    }
+
+    public Table crossTables(Table... tables) {
+        Table crossTable = null;
+        int numCols = 0;
+        TableDefinition tableDef = new TableDefinition();
+        Set<String> tableNames = new HashSet<>();
+        for (Table table : tables) {
+            int idCurTable = 0;
+            while (tableNames.contains(table.getDef().getName() + idCurTable))
+                idCurTable++;
+            String tableName = table.getDef().getName() + idCurTable;
+            tableNames.add(tableName);
+            numCols += table.getDef().getColumns().size();
+            for (Column column : table.getDef().getColumns()) {
+                Column newCol = (Column) column.clone();
+                newCol.setName(tableName + "." + newCol.getName());
+                tableDef.getColumns().add(column);
+            }
+        }
+        Object[] data = new Object[numCols];
+        Table table = new Table();
+        generateCrossTables(table, tables, 0, 0, data);
+        return crossTable;
+    }
+
+    private void generateCrossTables(Table table, Table[] tables, int indexTable, int numCols, Object[] data) {
+        if (indexTable == tables.length) {
+            table.data.add(data.clone());
+            return;
+        }
+        Table curTable = tables[indexTable];
+        for (Object[] row : curTable.getData()) {
+            int numColsNewRow = numCols;
+            for (Object element : row)
+                data[numColsNewRow++] = element;
+            generateCrossTables(table, tables, indexTable + 1, numColsNewRow, data);
+        }
+    }
 
 }

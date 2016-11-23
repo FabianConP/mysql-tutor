@@ -47,7 +47,7 @@ table_constraint
     ;
 
 drop_table_clause
-    : DROP TABLE table_name
+    : DROP TABLE (IF EXISTS)? table_name
     ;
 
 insert_clause
@@ -93,7 +93,8 @@ table_alias
    ;
 
 column_name
-   : ( ( schema_name DOT )? ID DOT )? ID ( column_name_alias )? | ( table_alias DOT )? ID | USER_VAR ( column_name_alias )?
+   //: ( ( schema_name DOT )? ID DOT )? ID ( column_name_alias )? | ( table_alias DOT )? ID | USER_VAR ( column_name_alias )?
+   : (ID DOT)*  ID
    ;
 
 column_name_alias
