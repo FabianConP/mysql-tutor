@@ -50,8 +50,7 @@ public class MySQLTutor extends Application {
         this.primaryStage.setTitle("MySQLTutor");
 
         initRootLayout();
-
-        showPersonOverview();
+        showSelect();
     }
 
     /**
@@ -76,17 +75,14 @@ public class MySQLTutor extends Application {
     /**
      * Shows the person overview inside the root layout.
      */
-    public void showPersonOverview() {
+    public void showSelect() {
         try {
-            // Load person overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MySQLTutor.class.getResource("view/Select.fxml"));
-            AnchorPane personOverview = (AnchorPane) loader.load();
+            AnchorPane selectOverview = (AnchorPane) loader.load();
 
-            // Set person overview into the center of root layout.
-            rootLayout.setCenter(personOverview);
+            rootLayout.setCenter(selectOverview);
 
-            // Give the controller access to the main app.
             SelectController controller = loader.getController();
 
             ArrayList<String> columnNames = new ArrayList<>();
