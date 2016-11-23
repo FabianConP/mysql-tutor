@@ -2,14 +2,9 @@ package model.logic;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Arrays;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import model.generated.MySQLLexer;
 import model.generated.MySQLParser;
 
-import org.antlr.v4.gui.TreeViewer;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;

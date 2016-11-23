@@ -23,6 +23,96 @@ public interface MySQLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStat(MySQLParser.StatContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MySQLParser#create_clause}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCreate_clause(MySQLParser.Create_clauseContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MySQLParser#data_type}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitData_type(MySQLParser.Data_typeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MySQLParser#column_list_definition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitColumn_list_definition(MySQLParser.Column_list_definitionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MySQLParser#column_definition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitColumn_definition(MySQLParser.Column_definitionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MySQLParser#column_list_attributes}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitColumn_list_attributes(MySQLParser.Column_list_attributesContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MySQLParser#column_attribute}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitColumn_attribute(MySQLParser.Column_attributeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MySQLParser#table_list_constraints}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTable_list_constraints(MySQLParser.Table_list_constraintsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MySQLParser#table_constraint}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTable_constraint(MySQLParser.Table_constraintContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MySQLParser#drop_table_clause}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDrop_table_clause(MySQLParser.Drop_table_clauseContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MySQLParser#insert_clause}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInsert_clause(MySQLParser.Insert_clauseContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MySQLParser#list_values}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitList_values(MySQLParser.List_valuesContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MySQLParser#update_clause}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUpdate_clause(MySQLParser.Update_clauseContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MySQLParser#column_list_assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitColumn_list_assignment(MySQLParser.Column_list_assignmentContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MySQLParser#column_assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitColumn_assignment(MySQLParser.Column_assignmentContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MySQLParser#delete_clause}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDelete_clause(MySQLParser.Delete_clauseContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MySQLParser#schema_name}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

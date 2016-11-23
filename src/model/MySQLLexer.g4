@@ -3,6 +3,83 @@ lexer grammar MySQLLexer;
 @ header { 
  }
 
+
+// Start mysql-tutor
+
+CREATE
+    : 'create'
+    ;
+
+TABLE
+    : 'table'
+    ;
+
+IF
+    : 'if'
+    ;
+
+INT_DT
+    : 'int'
+    ;
+
+DOUBLE_DT
+    : 'double'
+    ;
+
+DATE_DT
+    : 'date'
+    ;
+
+VARCHAR_DT
+    : 'varchar'
+    ;
+
+BLOB_DT
+    : 'blob'
+    ;
+
+PRIMARY
+    : 'primary'
+    ;
+
+AUTO
+    : 'auto'
+    ;
+
+INCREMENT
+    : 'increment'
+    ;
+
+DROP
+    : 'drop'
+    ;
+
+INSERT
+    : 'insert'
+    ;
+
+INTO
+    : 'into'
+    ;
+
+VALUES
+    : 'values'
+    ;
+
+UPDATE
+    : 'update'
+    ;
+
+SET
+    : 'set'
+    ;
+
+DELETE
+    : 'delete'
+    ;
+// End mysql-tutor
+
+
 SELECT
    : 'select'
    ;
