@@ -1,5 +1,6 @@
 package app.view;
 
+import app.MySQLTutor;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,6 +24,8 @@ public class SelectController {
     @FXML
     private TableView<Field> finalTable;
     private TableManagement finalTableManagement;
+    
+    private MySQLTutor tutorReference;
 
     public SelectController() {
     }
@@ -44,5 +47,10 @@ public class SelectController {
     @FXML
     private void runCommand () {
         Interpreter.runCommand("create table usuario (id int, edad int)");
+        
+    }
+
+    public void setMySQLTutorReference(MySQLTutor tutor) {
+        this.tutorReference = tutor;
     }
 }

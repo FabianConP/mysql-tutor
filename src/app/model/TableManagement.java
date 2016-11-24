@@ -20,7 +20,7 @@ public class TableManagement {
 
     public TableManagement(TableView<Field> table) {
         this.table = table;
-        columns = new ArrayList<TableColumn<Field,String> >();
+        columns = new ArrayList<>();
     }
     
     public void setup (ArrayList<String> columnNames,
@@ -34,7 +34,6 @@ public class TableManagement {
 
     	table.getColumns().addAll(columns);
 
-    	int i = 0;
     	for ( TableColumn<Field,String> col : columns ) {
             col.setCellValueFactory(cellData -> cellData.getValue().getColumnProperty());
     	}

@@ -90,9 +90,9 @@ public class MySQLTutor extends Application {
             data.add(new Field(temp));
             data.add(new Field(temp));
             
-
             SelectController controller = loader.getController();
             
+            controller.setMySQLTutorReference(this);
             controller.getCrossTableManagement().setup(columnNames, data);
             controller.getFinalTableManagement().setup(columnNames, data);
             
