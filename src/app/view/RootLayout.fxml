@@ -106,7 +106,7 @@
       </GridPane>
    </bottom>
    <stylesheets>
-      <URL value="@css/java-keywords.css" />
-      <URL value="@css/CustomTheme.css" />
+      <URL value="@css/BoldTheme.css" />
+      <URL value="@css/mysql-keywords.css" />
    </stylesheets>
 </BorderPane>

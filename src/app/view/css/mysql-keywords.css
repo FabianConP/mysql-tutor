@@ -1,5 +1,6 @@
 .keyword {
-    -fx-fill: green;
+    -fx-fill: #056571;
+    -fx-font-weight: bold;
 }
 .semicolon {
     -fx-font-weight: bold;
@@ -17,7 +18,7 @@
     -fx-font-weight: bold;
 }
 .string {
-    -fx-fill: blue;
+    -fx-fill: orange;
 }
 
 .comment {
@@ -25,5 +26,5 @@
 }
 
 .paragraph-box:has-caret {
-    -fx-background-color: #f2f9fc;
+    -fx-background-color: #22252c;
 }
