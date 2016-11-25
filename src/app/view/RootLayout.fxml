@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane prefHeight="600.0" prefWidth="1100.0" styleClass="background" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.view.RootLayoutController">
+<BorderPane prefHeight="600.0" prefWidth="1100.0" styleClass="background" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.view.RootLayoutController">
    <top>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -104,4 +105,8 @@
          </children>
       </GridPane>
    </bottom>
+   <stylesheets>
+      <URL value="@css/java-keywords.css" />
+      <URL value="@css/CustomTheme.css" />
+   </stylesheets>
 </BorderPane>

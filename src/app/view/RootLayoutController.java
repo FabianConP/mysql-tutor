@@ -39,16 +39,9 @@ public class RootLayoutController {
     
     
     private static final String[] KEYWORDS = new String[] {
-            "abstract", "assert", "boolean", "break", "byte",
-            "case", "catch", "char", "class", "const",
-            "continue", "default", "do", "double", "else",
-            "enum", "extends", "final", "finally", "float",
-            "for", "goto", "if", "implements", "import",
-            "instanceof", "int", "interface", "long", "native",
-            "new", "package", "private", "protected", "public",
-            "return", "short", "static", "strictfp", "super",
-            "switch", "synchronized", "this", "throw", "throws",
-            "transient", "try", "void", "volatile", "while"
+            "select", "from", "where", "like", "insert", "into", "update",
+            "create", "table",
+            "values"
     };
 
     private static final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
@@ -70,30 +63,11 @@ public class RootLayoutController {
     );
 
     private static final String sampleCode = String.join("\n", new String[] {
-        "package com.example;",
-        "",
-        "import java.util.*;",
-        "",
-        "public class Foo extends Bar implements Baz {",
-        "",
-        "    /*",
-        "     * multi-line comment",
-        "     */",
-        "    public static void main(String[] args) {",
-        "        // single-line comment",
-        "        for(String arg: args) {",
-        "            if(arg.length() != 0)",
-        "                System.out.println(arg);",
-        "            else",
-        "                System.err.println(\"Warning: empty string as argument\");",
-        "        }",
-        "    }",
-        "",
-        "}"
+        "select * from tabla;",
+        "select * from tabla where a = 2 and x = 1;",
+        "select * from tabla where a = 2 and x = 1;",
+        "insert into tabla values(value1, value2);"
     });
-
-    
-    
 
     public RootLayoutController() {
     }
