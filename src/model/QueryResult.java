@@ -4,7 +4,9 @@ import java.util.List;
 
 public class QueryResult {
     
-    private String type;    
+    public enum Type {SELECT, UPDATE, CREATE};
+    
+    private Type type;    
     
     private List<String> columns;
     private List<SingleResult> results;
@@ -12,25 +14,23 @@ public class QueryResult {
     public QueryResult() {
     }    
     
-    public QueryResult(String type) {
+    public QueryResult(Type type) {
         this.type = type;
     }
     
-    public QueryResult(String type, List<String> columns, List<SingleResult> results) {
+    public QueryResult(Type type, List<String> columns, List<SingleResult> results) {
         this.type = type;
         this.columns = columns;
         this.results = results;
     }
-    
-    
 
-    public String getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Type type) {
         this.type = type;
-    }
+    }   
 
     public List<String> getColumns() {
         return columns;

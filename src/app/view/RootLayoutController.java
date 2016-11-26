@@ -5,19 +5,14 @@
  */
 package app.view;
 
-import app.model.TableManagement;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.fxml.FXML;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebEvent;
-import javafx.scene.web.WebView;
+import model.QueryResult;
 import model.logic.Interpreter;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
@@ -35,6 +30,9 @@ public class RootLayoutController {
     
     @FXML
     private BorderPane codePane;
+    
+    
+    private CodeArea codeArea;
     
     
     
@@ -74,7 +72,7 @@ public class RootLayoutController {
     
     @FXML
     private void initialize() {
-        CodeArea codeArea = new CodeArea();
+        codeArea = new CodeArea();
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
 
         codeArea.richChanges()
@@ -114,6 +112,24 @@ public class RootLayoutController {
     
     @FXML
     private void runCommand () {
-        Interpreter.runCommand("create table usuario (id int, edad int)");
+        //Temporary gets the whole text from codeArea
+        Interpreter.runCommand(codeArea.getText());
+        
+        QueryResult result = Interpreter.result;
+        
+        switch (result.getType()) {
+            case SELECT:
+                
+                break;
+            case CREATE:
+                
+                break;
+            case UPDATE:
+                
+                break;
+                
+            default:
+                
+        }
     }
 }
