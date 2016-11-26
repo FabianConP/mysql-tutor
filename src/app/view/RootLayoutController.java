@@ -5,6 +5,10 @@
  */
 package app.view;
 
+import app.MySQLTutor;
+import app.SelectView;
+import app.View;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.regex.Matcher;
@@ -25,6 +29,8 @@ import org.fxmisc.richtext.StyleSpansBuilder;
  */
 public class RootLayoutController {
     
+    private MySQLTutor tutor;
+            
     @FXML
     private TextField commandField;
     
@@ -35,6 +41,17 @@ public class RootLayoutController {
     private CodeArea codeArea;
     
     
+    private final String SELECT_SOURCE;
+    private final String UPDATE_SOURCE;
+    private final String CREATE_SOURCE;
+    
+    private View currentView;
+    
+    public RootLayoutController() {
+        SELECT_SOURCE = "view/Select.fxml";
+        UPDATE_SOURCE = "view/Update.fxml";
+        CREATE_SOURCE = "view/Create.fxml";
+    }
     
     private static final String[] KEYWORDS = new String[] {
             "select", "from", "where", "like", "insert", "into", "update",
@@ -67,8 +84,7 @@ public class RootLayoutController {
         "insert into tabla values(value1, value2);"
     });
 
-    public RootLayoutController() {
-    }
+    
     
     @FXML
     private void initialize() {
@@ -111,7 +127,7 @@ public class RootLayoutController {
     
     
     @FXML
-    private void runCommand () {
+    private void runCommand () throws IOException {
         //Temporary gets the whole text from codeArea
         Interpreter.runCommand(codeArea.getText());
         
@@ -119,7 +135,7 @@ public class RootLayoutController {
         
         switch (result.getType()) {
             case SELECT:
-                
+                currentView = new SelectView(tutor, SELECT_SOURCE);                
                 break;
             case CREATE:
                 
@@ -131,5 +147,12 @@ public class RootLayoutController {
             default:
                 
         }
+        
+        currentView.setUp(result);
+        currentView.animate();
+    }
+
+    public void setMySQLReference(MySQLTutor tutor) {
+        this.tutor = tutor;
     }
 }

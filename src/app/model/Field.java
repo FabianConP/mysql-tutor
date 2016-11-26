@@ -10,11 +10,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-/**
- * Model class for a Field.
- *
- * @author Marco Jakob
- */
 public class Field {
 
     private final ArrayList<StringProperty> data;
@@ -24,10 +19,10 @@ public class Field {
         this(new ArrayList<>());
     }
 
-    public Field(ArrayList<String> data) {
+    public Field(ArrayList<Object> data) {
         this.data = new ArrayList<>();
         for ( int i = 0; i < data.size(); ++i ) {
-            this.data.add(new SimpleStringProperty(data.get(i)));
+            this.data.add(new SimpleStringProperty((String) data.get(i)));
         }
         currentProperty = 0;
     }

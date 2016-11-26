@@ -3,7 +3,9 @@ package model.logic;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.List;
 import model.QueryResult;
+import model.SingleResult;
 import model.generated.MySQLLexer;
 import model.generated.MySQLParser;
 
@@ -28,6 +30,27 @@ public class Interpreter {
         
         MyVisitor<Object> loader = new MyVisitor<>();
         loader.visit(tree);
+        
+        //Dummy data
+        ArrayList<String> columnNames = new ArrayList<>();
+        columnNames.add("id");
+        columnNames.add("name");
+        columnNames.add("email");
+        ArrayList<Object> temp = new ArrayList<>();
+        temp.add("Milder");
+        temp.add("Hernandez");
+        temp.add("milderhc");
+        
+        SingleResult row = new SingleResult(temp, "no transtalation", true);
+        ArrayList<SingleResult> data = new ArrayList<>();
+        data.add(row);
+        data.add(row);
+        data.add(row);
+        
+        
+        result.setType(QueryResult.Type.SELECT);
+        result.setColumns(columnNames);
+        result.setResults(data);
     }
     
 }

@@ -13,6 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import app.model.*;
+import app.view.RootLayoutController;
 import app.view.SelectController;
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,10 +31,8 @@ public class MySQLTutor extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
-    public static MySQLTutor tutor;
 
     public MySQLTutor() {
-        tutor = this;
     }
 
     @Override
@@ -41,80 +40,42 @@ public class MySQLTutor extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("MySQLTutor");
 
-        initRootLayout();
-        showSelect();       
+        initRootLayout();   
     }
 
-    /**
-     * Initializes the root layout.
-     */
     public void initRootLayout() {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MySQLTutor.class.getResource("view/RootLayout.fxml"));
             rootLayout = (BorderPane) loader.load();
+            
+            RootLayoutController controller = loader.getController();
+            controller.setMySQLReference(this);
 
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
             primaryStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Shows the person overview inside the root layout.
-     */
-    public void showSelect() {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MySQLTutor.class.getResource("view/Select.fxml"));
-            AnchorPane selectOverview = (AnchorPane) loader.load();
-            rootLayout.setCenter(selectOverview);
-
-            //Dummy data
-            ArrayList<String> columnNames = new ArrayList<>();
-            columnNames.add("id");
-            columnNames.add("name");
-            columnNames.add("lel");
-            ArrayList<String> temp = new ArrayList<>();
-            temp.add("Milder");
-            temp.add("Hernandez");
-            temp.add("milderhc");
-            ObservableList<Field> data = FXCollections.observableArrayList();
-            data.add(new Field(temp));
-            data.add(new Field(temp));
-            data.add(new Field(temp));
-            data.add(new Field(temp));
-            data.add(new Field(temp));
             
-            SelectController controller = loader.getController();
-            
-            controller.setMySQLTutorReference(this);
-            controller.getCrossTableManagement().setup(columnNames, data);
-            controller.getFinalTableManagement().setup(columnNames, data);
             
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    /**
-     * Returns the main stage.
-     * @return
-     */
     public Stage getPrimaryStage() {
         return primaryStage;
     }
-    
-    public void getCommand () {
-        System.out.println("kjshdf");
+
+    public BorderPane getRootLayout() {
+        return rootLayout;
+    }
+
+    public void setRootLayout(BorderPane rootLayout) {
+        this.rootLayout = rootLayout;
     }
     
-    
-
     public static void main(String[] args) throws FileNotFoundException, IOException {       
         launch(args);      
     }

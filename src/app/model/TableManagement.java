@@ -6,6 +6,7 @@
 package app.model;
 
 import java.util.ArrayList;
+import java.util.List;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -15,7 +16,7 @@ import javafx.scene.control.TableView;
  * @author milder
  */
 public class TableManagement {
-    private ArrayList<TableColumn<Field, String>> columns;
+    private List<TableColumn<Field, String>> columns;
     private TableView<Field> table;
 
     public TableManagement(TableView<Field> table) {
@@ -23,7 +24,7 @@ public class TableManagement {
         columns = new ArrayList<>();
     }
     
-    public void setup (ArrayList<String> columnNames,
+    public void setup (List<String> columnNames,
     		ObservableList<Field> data) {
     	//Clears the current columns
     	table.getColumns().removeAll(columns);
