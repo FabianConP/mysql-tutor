@@ -1,9 +1,10 @@
-package app;
+package app.controller;
 
+import app.MySQLTutor;
 import app.model.Field;
 import app.model.TableManagement;
 import app.view.RootLayoutController;
-import app.view.SelectController;
+import app.view.UpdateController;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +23,15 @@ import model.SingleResult;
  *
  * @author milder
  */
-public class SelectView extends View {
+public class UpdateView extends View {
     
     private ObservableList<Field> data;
     private QueryResult result;
-    private SelectController controller;
+    private UpdateController controller;
 
-    public SelectView(MySQLTutor tutor, String source) throws IOException {
+    public UpdateView(MySQLTutor tutor, String source) throws IOException {
         super(tutor, source);
+        startingRowAnimation = 0;
     }
 
     @Override
@@ -43,7 +45,7 @@ public class SelectView extends View {
 
         controller = loader.getController();
 
-        controller.setMySQLTutorReference(tutor);
+        controller.setTutorReference(tutor);
         controller.getCrossTableManagement().setup(result.getColumns(), data);
         controller.getFinalTableManagement().setup(result.getColumns());
     }
@@ -54,23 +56,39 @@ public class SelectView extends View {
         TableManagement finalManagement = controller.getFinalTableManagement();
         List<SingleResult> results = result.getResults();
         
-        String greenStyle = "-fx-background-color: green";
-        String redStyle = "-fx-background-color: red";
-        
-        int i = 0;
-        for (SingleResult r : results) {
+        for (currentRowAnimation = startingRowAnimation; 
+                currentRowAnimation < results.size(); ++currentRowAnimation) {
+            SingleResult r = results.get(currentRowAnimation);
+            crossManagement.markRow(currentRowAnimation, STYLE_BLUE);
+            Thread.sleep(miliSeconds);
             if ( r.isSuccessful() ) {
-                crossManagement.markRow(i, greenStyle);
-                Thread.sleep(miliSeconds);
+                crossManagement.markRow(currentRowAnimation, STYLE_OCEAN);
                 finalManagement.addRow(new Field(r.getData()));
-                finalManagement.markRow(i, redStyle);
+                finalManagement.markRow(finalManagement.getData().size() - 1, STYLE_OCEAN);
                 Thread.sleep(miliSeconds);
             } else {
-                crossManagement.markRow(i, redStyle);
+                crossManagement.markRow(currentRowAnimation, STYLE_CHILLI);
             }
-
-            ++i;
         }
+        
+        crossManagement.markRow(crossManagement.getData().size(), null);
+        finalManagement.markRow(finalManagement.getData().size(), null);
     }
+
+    @Override
+    public void pauseAnimation() throws InterruptedException {
+        startingRowAnimation = currentRowAnimation;
+    }
+
+    @Override
+    public void resumeAnimation(int miliSeconds) throws InterruptedException {
+        animate(miliSeconds);
+    }
+
+    public UpdateController getController() {
+        return controller;
+    }
+    
+    
     
 }

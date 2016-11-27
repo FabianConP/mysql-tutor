@@ -5,7 +5,9 @@
     -fx-button-over-color: #056571;
     -fx-button-border-color: #056571;
         
-    -fx-code-area-lines-color: #000000
+    -fx-code-area-lines-color: #000000;
+        
+    -fx-has-caret-color: #056571;
 }
 
 
@@ -135,7 +137,7 @@
 }
 
 .button:hover {
-    -fx-background-color: derive(-fx-background, 20%);
+    -fx-background-color: -fx-button-over-color;
 }
 
 .button:pressed, .button:default:hover:pressed {
