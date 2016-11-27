@@ -1,22 +1,16 @@
 package app.view;
 
 import app.MySQLTutor;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import app.model.Field;
+import app.model.TableManagement;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.util.Callback;
 
-import java.util.ArrayList;
-import app.model.*;
-import model.logic.Interpreter;
-
-public class SelectController {
-    
+/**
+ *
+ * @author milder
+ */
+public class UpdateController {
     @FXML
     private TableView<Field> crossTable;
     private TableManagement crossTableManagement;
@@ -27,8 +21,9 @@ public class SelectController {
     
     private MySQLTutor tutorReference;
 
-    public SelectController() {
+    public UpdateController() {
     }
+    
     
     public TableManagement getCrossTableManagement () {
         return crossTableManagement;
@@ -67,6 +62,6 @@ public class SelectController {
     public void setTutorReference(MySQLTutor tutorReference) {
         this.tutorReference = tutorReference;
     }
-
+    
     
 }

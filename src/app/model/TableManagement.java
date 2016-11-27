@@ -28,6 +28,7 @@ public class TableManagement {
     public TableManagement(TableView<Field> table) {
         this.table = table;
         columns = new ArrayList<>();
+        data = FXCollections.observableArrayList();
     }
     
     public void setup (List<String> columnNames) {
@@ -50,7 +51,10 @@ public class TableManagement {
     	for ( TableColumn<Field,String> col : columns ) {
             col.setCellValueFactory(cellData -> cellData.getValue().getColumnProperty());
     	}
-
+        
+        if (this.data == null) 
+            this.data = FXCollections.observableArrayList();
+        
         table.setItems(data);
     }
     
@@ -95,11 +99,19 @@ public class TableManagement {
         this.table = table;
     }
     
-    public void addRow (Field field) {
-        if (data == null) 
-            data = FXCollections.observableArrayList();
+    public void addRow (Field field) {            
         data.add(field);
         table.setItems(data);
     }
+
+    public ObservableList<Field> getData() {
+        return data;
+    }
+
+    public void setData(ObservableList<Field> data) {
+        this.data = data;
+    }
+    
+    
     
 }

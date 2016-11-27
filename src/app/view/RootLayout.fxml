@@ -8,12 +8,14 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane prefHeight="600.0" prefWidth="1100.0" styleClass="background" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.view.RootLayoutController">
+<BorderPane onKeyPressed="#onKeyPressed" prefHeight="600.0" prefWidth="1100.0" styleClass="background" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.view.RootLayoutController">
    <top>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -62,51 +64,89 @@
          </children>
       </GridPane>
    </top>
-   <bottom>
-      <GridPane prefHeight="227.0" prefWidth="1100.0" BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints maxHeight="156.0" minHeight="10.0" prefHeight="146.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="136.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <ButtonBar prefHeight="33.0" prefWidth="387.0" GridPane.rowIndex="1">
-              <buttons>
-                <Button mnemonicParsing="false" onAction="#runCommand" prefHeight="33.0" prefWidth="821.0" text="Execute command" />
-                  <Button mnemonicParsing="false" text="View animation" />
-              </buttons>
-               <GridPane.margin>
-                  <Insets left="150.0" right="150.0" />
-               </GridPane.margin>
-            </ButtonBar>
-            <GridPane>
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="111.0" minHeight="10.0" prefHeight="111.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Label text="Enter your command">
-                     <GridPane.margin>
-                        <Insets left="20.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <BorderPane fx:id="codePane" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets left="20.0" right="20.0" />
-                     </GridPane.margin>
-                  </BorderPane>
-               </children>
-            </GridPane>
-         </children>
-      </GridPane>
-   </bottom>
    <stylesheets>
       <URL value="@css/BoldTheme.css" />
       <URL value="@css/mysql-keywords.css" />
    </stylesheets>
+   <bottom>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <top>
+            <Separator prefWidth="200.0" BorderPane.alignment="CENTER" />
+         </top>
+         <bottom>
+            <GridPane prefHeight="227.0" prefWidth="1100.0" BorderPane.alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="156.0" minHeight="10.0" prefHeight="146.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="136.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <ButtonBar prefHeight="71.0" prefWidth="900.0" GridPane.rowIndex="1">
+                    <buttons>
+                      <Button fx:id="runCommandButton" mnemonicParsing="false" onAction="#runCommand" prefHeight="33.0" prefWidth="821.0" text="Execute command" />
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <top>
+                              <GridPane BorderPane.alignment="CENTER">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label text="Speed">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" right="20.0" />
+                                       </GridPane.margin>
+                                       <graphic>
+                                          <Slider fx:id="speedSlider" prefHeight="17.0" prefWidth="283.0" />
+                                       </graphic>
+                                    </Label>
+                                    <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                      <buttons>
+                                        <Button fx:id="pauseResumeButton" mnemonicParsing="false" onAction="#pauseAnimation" prefHeight="70.0" prefWidth="375.0" text="Pause" />
+                                          <Button fx:id="stopButton" mnemonicParsing="false" onAction="#stopAnimation" text="Stop" />
+                                      </buttons>
+                                       <GridPane.margin>
+                                          <Insets right="20.0" />
+                                       </GridPane.margin>
+                                    </ButtonBar>
+                                 </children>
+                              </GridPane>
+                           </top>
+                        </BorderPane>
+                    </buttons>
+                     <GridPane.margin>
+                        <Insets left="150.0" right="150.0" />
+                     </GridPane.margin>
+                  </ButtonBar>
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="111.0" minHeight="10.0" prefHeight="111.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="Enter your command">
+                           <GridPane.margin>
+                              <Insets left="20.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <BorderPane fx:id="codePane" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="20.0" right="20.0" />
+                           </GridPane.margin>
+                        </BorderPane>
+                     </children>
+                  </GridPane>
+               </children>
+            </GridPane>
+         </bottom>
+      </BorderPane>
+   </bottom>
 </BorderPane>
