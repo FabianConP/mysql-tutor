@@ -15,6 +15,8 @@ public abstract class View {
     protected String source;
     protected FXMLLoader loader;
     
+    protected int startingRowAnimation, currentRowAnimation;
+    
     public View(MySQLTutor tutor, String source) throws IOException {
         this.tutor = tutor;
         this.source = source;
@@ -27,4 +29,6 @@ public abstract class View {
     
     public abstract void setUp (QueryResult result);
     public abstract void animate (int miliSeconds) throws InterruptedException;
+    public abstract void pauseAnimation () throws InterruptedException;
+    public abstract void resumeAnimation (int miliSeconds) throws InterruptedException;
 }

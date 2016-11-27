@@ -30,6 +30,7 @@ public class SelectView extends View {
 
     public SelectView(MySQLTutor tutor, String source) throws IOException {
         super(tutor, source);
+        startingRowAnimation = 0;
     }
 
     @Override
@@ -57,20 +58,32 @@ public class SelectView extends View {
         String greenStyle = "-fx-background-color: green";
         String redStyle = "-fx-background-color: red";
         
-        int i = 0;
-        for (SingleResult r : results) {
+        for (currentRowAnimation = startingRowAnimation; 
+                currentRowAnimation < results.size(); ++currentRowAnimation) {
+            SingleResult r = results.get(currentRowAnimation);
             if ( r.isSuccessful() ) {
-                crossManagement.markRow(i, greenStyle);
+                crossManagement.markRow(currentRowAnimation, greenStyle);
                 Thread.sleep(miliSeconds);
                 finalManagement.addRow(new Field(r.getData()));
-                finalManagement.markRow(i, redStyle);
+                finalManagement.markRow(finalManagement.getData().size() - 1, redStyle);
                 Thread.sleep(miliSeconds);
             } else {
-                crossManagement.markRow(i, redStyle);
+                crossManagement.markRow(currentRowAnimation, redStyle);
             }
-
-            ++i;
         }
+        
+        crossManagement.markRow(crossManagement.getData().size(), greenStyle);
+        finalManagement.markRow(finalManagement.getData().size(), greenStyle);
+    }
+
+    @Override
+    public void pauseAnimation() throws InterruptedException {
+        startingRowAnimation = currentRowAnimation;
+    }
+
+    @Override
+    public void resumeAnimation(int miliSeconds) throws InterruptedException {
+        animate(miliSeconds);
     }
     
 }

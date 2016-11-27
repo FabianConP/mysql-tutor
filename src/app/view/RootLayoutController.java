@@ -16,7 +16,8 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
 import model.QueryResult;
 import model.logic.Interpreter;
@@ -34,14 +35,19 @@ public class RootLayoutController {
     private MySQLTutor tutor;
             
     @FXML
-    private TextField commandField;
-    
-    @FXML
     private BorderPane codePane;
     
+    @FXML
+    private Slider speedSlider;
+    
+    @FXML
+    private Button pauseResumeButton;
+    @FXML
+    private Button runCommandButton;
+    @FXML
+    private Button stopButton;
     
     private CodeArea codeArea;
-    
     
     private final String SELECT_SOURCE;
     private final String UPDATE_SOURCE;
@@ -49,10 +55,15 @@ public class RootLayoutController {
     
     private View currentView;
     
+    private final double DEFAULT_SLIDER_VALUE;
+    
+    private AnimationThread animationThread;
+    
     public RootLayoutController() {
         SELECT_SOURCE = "view/Select.fxml";
         UPDATE_SOURCE = "view/Update.fxml";
         CREATE_SOURCE = "view/Create.fxml";
+        DEFAULT_SLIDER_VALUE = 80;
     }
     
     private static final String[] KEYWORDS = new String[] {
@@ -101,6 +112,12 @@ public class RootLayoutController {
         codeArea.replaceText(0, 0, sampleCode);
         
         codePane.setCenter(codeArea); 
+        speedSlider.setValue(DEFAULT_SLIDER_VALUE);
+        animationThread = new AnimationThread();
+        
+        runCommandButton.setDisable(false);
+        pauseResumeButton.setDisable(true);
+        stopButton.setDisable(true);
     }
     
     
@@ -127,9 +144,18 @@ public class RootLayoutController {
         return spansBuilder.create();
     }
     
+    private void enableDisableButtons () {
+        runCommandButton.setDisable(!runCommandButton.isDisabled());
+        pauseResumeButton.setDisable(!pauseResumeButton.isDisabled());
+        stopButton.setDisable(!stopButton.isDisabled());
+    }
+    
     
     @FXML
     private void runCommand () throws IOException {
+        pauseResumeButton.setText("Pause");
+        enableDisableButtons();
+        
         //Temporary gets the whole text from codeArea
         Interpreter.runCommand(codeArea.getText());
         
@@ -151,20 +177,45 @@ public class RootLayoutController {
         }
         
         currentView.setUp(result);
-        
-        new Thread() {
-            @Override
-            public void run () {
-                try {
-                    currentView.animate(1000);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(RootLayoutController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }.start();
+        animationThread = new AnimationThread();
+        animationThread.start();
     }
 
     public void setMySQLReference(MySQLTutor tutor) {
         this.tutor = tutor;
+    }
+    
+    private class AnimationThread extends Thread {
+        @Override
+        public void run () {
+            try {
+                currentView.animate((int) ((100 - speedSlider.getValue()) * 25));
+            } catch (InterruptedException ex) {
+                Logger.getLogger(RootLayoutController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            pauseResumeButton.setText("Pause");
+            enableDisableButtons();
+        }
+    }
+    
+    @FXML
+    private void pauseAnimation () throws InterruptedException {
+        if ( animationThread.isAlive() ) {
+            currentView.pauseAnimation();
+            animationThread.stop();
+            pauseResumeButton.setText("Resume");
+        } else {
+            animationThread = new AnimationThread();
+            animationThread.start();
+            pauseResumeButton.setText("Pause");
+        }
+    }
+    
+    @FXML
+    private void stopAnimation () throws InterruptedException {       
+        if ( animationThread.isAlive() ) {
+            animationThread.stop();
+        }
+        enableDisableButtons();
     }
 }
