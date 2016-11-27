@@ -19,6 +19,8 @@ public class Interpreter {
     public static QueryResult result;
     
     public static void runCommand (String command) {
+        System.out.println(command);
+        
         ANTLRInputStream input = new ANTLRInputStream(command);
 
         MySQLLexer lexer = new MySQLLexer(input);

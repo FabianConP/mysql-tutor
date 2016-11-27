@@ -59,14 +59,15 @@ public class UpdateView extends View {
         for (currentRowAnimation = startingRowAnimation; 
                 currentRowAnimation < results.size(); ++currentRowAnimation) {
             SingleResult r = results.get(currentRowAnimation);
+            crossManagement.markRow(currentRowAnimation, STYLE_BLUE);
+            Thread.sleep(miliSeconds);
             if ( r.isSuccessful() ) {
                 crossManagement.markRow(currentRowAnimation, STYLE_OCEAN);
-                Thread.sleep(miliSeconds);
                 finalManagement.addRow(new Field(r.getData()));
-                finalManagement.markRow(finalManagement.getData().size() - 1, STYLE_CORAL);
+                finalManagement.markRow(finalManagement.getData().size() - 1, STYLE_OCEAN);
                 Thread.sleep(miliSeconds);
             } else {
-                crossManagement.markRow(currentRowAnimation, STYLE_CORAL);
+                crossManagement.markRow(currentRowAnimation, STYLE_CHILLI);
             }
         }
         
