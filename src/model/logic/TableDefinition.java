@@ -46,6 +46,14 @@ public class TableDefinition {
         this.name = name;
     }
 
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
     public List<Column> getColumns() {
         return columns;
     }
@@ -60,6 +68,16 @@ public class TableDefinition {
 
     public void setConstraints(List<Constraint> constraints) {
         this.constraints = constraints;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder columnsHeader = new StringBuilder();
+        columns.forEach((column) -> {
+            columnsHeader.append('|');
+            columnsHeader.append(column.getAlias());
+        });
+        return "TableDefinition{" + "name=" + name + ", alias=" + alias + ", columns=" + columnsHeader + '}';
     }
     
     

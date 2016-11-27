@@ -4,8 +4,6 @@ parser grammar MySQLParser;
 options
    { tokenVocab = MySQLLexer; }
 
-// Start mysql-tutor
-
 commands
     : stat+
     ;
@@ -51,7 +49,7 @@ drop_table_clause
     ;
 
 insert_clause
-    : INSERT INTO table_name column_list VALUES list_values
+    : INSERT INTO table_name column_list? VALUES list_values
     ;
 
 list_values
@@ -74,14 +72,12 @@ delete_clause
     : DELETE FROM table_name where_clause
     ;
 
-// End mysql-tutor
-
 schema_name
    : ID
    ;
 
 select_clause
-   : SELECT column_list_clause ( FROM table_references )? ( where_clause )?
+   : SELECT (column_list_clause | ASTERISK) ( FROM (table_references | join_clause))? ( where_clause )?
    ;
 
 table_name
@@ -89,12 +85,11 @@ table_name
    ;
 
 table_alias
-   : ID
+   : ID (AS ID)?
    ;
 
 column_name
-   //: ( ( schema_name DOT )? ID DOT )? ID ( column_name_alias )? | ( table_alias DOT )? ID | USER_VAR ( column_name_alias )?
-   : (ID DOT)*  ID
+   : (ID DOT)*  ID (AS ID)?
    ;
 
 column_name_alias
@@ -126,23 +121,23 @@ where_clause
    ;
 
 expression
-   : simple_expression ( expr_op simple_expression )*
+   //: expr ( expr_op expr )*
+    : expr
    ;
+
+expr
+    : element
+    | expr relational_op expr
+    | expr expr_op expr
+    | expr mul_op expr
+    | expr SUM expr
+    | expr RES expr
+    | RES expr
+    | LPAREN expr RPAREN
+    ;
 
 element
-   : USER_VAR | ID | ( '|' ID '|' ) | INT | column_name
-   ;
-
-right_element
-   : element
-   ;
-
-left_element
-   : element
-   ;
-
-target_element
-   : element
+   : ID | INT | DOUBLE | STRING |column_name
    ;
 
 relational_op
@@ -150,8 +145,12 @@ relational_op
    ;
 
 expr_op
-   : AND | XOR | OR | NOT
+   : AND | XOR | OR // | NOT
    ;
+
+mul_op
+    : MUL | DIV
+    ;
 
 between_op
    : BETWEEN
@@ -161,17 +160,27 @@ is_or_is_not
    : IS | IS NOT
    ;
 
-simple_expression
+
+
+table_references
+   //: table_reference ( ( COMMA table_reference ) | join_clause )*
+    : table_alias (COMMA table_alias)*
+   ;
+
+join_clause
+   //: ( ( INNER | CROSS )? JOIN table_atom ( join_condition )? ) | ( STRAIGHT_JOIN table_atom ( ON expression )? ) | ( ( LEFT | RIGHT ) ( OUTER )? JOIN table_factor4 join_condition ) | ( NATURAL ( ( LEFT | RIGHT ) ( OUTER )? )? JOIN table_atom )
+    :
+   ;
+
+join_condition
+   : ( ON expression ( expr_op expression )* ) | ( USING column_list )
+   ;
+
+/*
+expr
    : left_element relational_op right_element | target_element between_op left_element AND right_element | target_element is_or_is_not NULL
    ;
 
-table_references
-   : table_reference ( ( COMMA table_reference ) | join_clause )*
-   ;
-
-table_reference
-   : table_factor1 | table_atom
-   ;
 
 table_factor1
    : table_factor2 ( ( INNER | CROSS )? JOIN table_atom ( join_condition )? )?
@@ -193,13 +202,6 @@ table_atom
    : ( table_name ( partition_clause )? ( table_alias )? ( index_hint_list )? ) | ( subquery subquery_alias ) | ( LPAREN table_references RPAREN ) | ( OJ table_reference LEFT OUTER JOIN table_reference ON expression )
    ;
 
-join_clause
-   : ( ( INNER | CROSS )? JOIN table_atom ( join_condition )? ) | ( STRAIGHT_JOIN table_atom ( ON expression )? ) | ( ( LEFT | RIGHT ) ( OUTER )? JOIN table_factor4 join_condition ) | ( NATURAL ( ( LEFT | RIGHT ) ( OUTER )? )? JOIN table_atom )
-   ;
-
-join_condition
-   : ( ON expression ( expr_op expression )* ) | ( USING column_list )
-   ;
 
 index_hint_list
    : index_hint ( COMMA index_hint )*
@@ -236,3 +238,4 @@ subquery_alias
 subquery
    : LPAREN select_clause RPAREN
    ;
+*/

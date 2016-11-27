@@ -77,6 +77,10 @@ SET
 DELETE
     : 'delete'
     ;
+
+AS
+    : 'as'
+    ;
 // End mysql-tutor
 
 
@@ -155,7 +159,19 @@ FALSE
    ;
 
 
-DIVIDE
+SUM
+    : '+'
+    ;
+
+RES
+    : '-'
+    ;
+
+MUL
+    : '*'
+    ;
+
+DIV
    : 'div' | '/'
    ;
 
@@ -375,14 +391,14 @@ USE
    ;
 
 
-IGNORE
-   : 'ignore'
-   ;
+//IGNORE
+//   : 'ignore'
+//   ;
 
 
-PARTITION
-   : 'partition'
-   ;
+//PARTITION
+//   : 'partition'
+//   ;
 
 
 STRAIGHT_JOIN
@@ -405,9 +421,9 @@ RIGHT
    ;
 
 
-OJ
-   : 'oj'
-   ;
+//OJ
+//   : 'oj'
+//   ;
 
 
 ON
@@ -424,6 +440,14 @@ INT
    : '0' .. '9'+
    ;
 
+DOUBLE
+    : INT DOT INT
+    ;
+
+STRING
+    : ('\'' | '"') ~['\'"']* ('\'' | '"')
+    ;
+
 
 NEWLINE
    : '\r'? '\n' -> skip
@@ -434,7 +458,7 @@ WS
    : ( ' ' | '\t' | '\n' | '\r' )+ -> skip
    ;
 
-
+/*
 USER_VAR
    : '@' ( USER_VAR_SUBFIX1 | USER_VAR_SUBFIX2 | USER_VAR_SUBFIX3 | USER_VAR_SUBFIX4 )
    ;
@@ -458,3 +482,4 @@ fragment USER_VAR_SUBFIX3
 fragment USER_VAR_SUBFIX4
    : ( 'A' .. 'Z' | 'a' .. 'z' | '_' | '$' | '0' .. '9' | DOT )+
    ;
+*/

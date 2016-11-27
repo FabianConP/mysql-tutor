@@ -1,11 +1,9 @@
 package model.logic;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import model.QueryResult;
-import model.SingleResult;
 import model.generated.MySQLLexer;
 import model.generated.MySQLParser;
 
@@ -25,11 +23,11 @@ public class Interpreter {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         MySQLParser parser = new MySQLParser(tokens);
         ParseTree tree = parser.commands();
-        
-        result = new QueryResult();
-        
         MyVisitor<Object> loader = new MyVisitor<>();
         loader.visit(tree);
+        
+        /*result = new QueryResult();
+        
         
         //Dummy data
         ArrayList<String> columnNames = new ArrayList<>();
@@ -51,6 +49,19 @@ public class Interpreter {
         result.setType(QueryResult.Type.SELECT);
         result.setColumns(columnNames);
         result.setResults(data);
+        */
+    }
+    
+    public static void main(String[] args) throws IOException{
+        FileInputStream inputStream = new FileInputStream("input.txt");
+        ANTLRInputStream input = new ANTLRInputStream(inputStream);
+        
+        MySQLLexer lexer = new MySQLLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        MySQLParser parser = new MySQLParser(tokens);
+        ParseTree tree = parser.commands();
+        MyVisitor<Object> loader = new MyVisitor<>();
+        loader.visit(tree);
     }
     
 }

@@ -308,6 +308,16 @@ public interface MySQLParserListener extends ParseTreeListener {
 	 */
 	void exitExpression(MySQLParser.ExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MySQLParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpr(MySQLParser.ExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MySQLParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpr(MySQLParser.ExprContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MySQLParser#element}.
 	 * @param ctx the parse tree
 	 */
@@ -317,36 +327,6 @@ public interface MySQLParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitElement(MySQLParser.ElementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MySQLParser#right_element}.
-	 * @param ctx the parse tree
-	 */
-	void enterRight_element(MySQLParser.Right_elementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MySQLParser#right_element}.
-	 * @param ctx the parse tree
-	 */
-	void exitRight_element(MySQLParser.Right_elementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MySQLParser#left_element}.
-	 * @param ctx the parse tree
-	 */
-	void enterLeft_element(MySQLParser.Left_elementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MySQLParser#left_element}.
-	 * @param ctx the parse tree
-	 */
-	void exitLeft_element(MySQLParser.Left_elementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MySQLParser#target_element}.
-	 * @param ctx the parse tree
-	 */
-	void enterTarget_element(MySQLParser.Target_elementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MySQLParser#target_element}.
-	 * @param ctx the parse tree
-	 */
-	void exitTarget_element(MySQLParser.Target_elementContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MySQLParser#relational_op}.
 	 * @param ctx the parse tree
@@ -368,6 +348,16 @@ public interface MySQLParserListener extends ParseTreeListener {
 	 */
 	void exitExpr_op(MySQLParser.Expr_opContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MySQLParser#mul_op}.
+	 * @param ctx the parse tree
+	 */
+	void enterMul_op(MySQLParser.Mul_opContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MySQLParser#mul_op}.
+	 * @param ctx the parse tree
+	 */
+	void exitMul_op(MySQLParser.Mul_opContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MySQLParser#between_op}.
 	 * @param ctx the parse tree
 	 */
@@ -388,16 +378,6 @@ public interface MySQLParserListener extends ParseTreeListener {
 	 */
 	void exitIs_or_is_not(MySQLParser.Is_or_is_notContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MySQLParser#simple_expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterSimple_expression(MySQLParser.Simple_expressionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MySQLParser#simple_expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitSimple_expression(MySQLParser.Simple_expressionContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MySQLParser#table_references}.
 	 * @param ctx the parse tree
 	 */
@@ -407,66 +387,6 @@ public interface MySQLParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitTable_references(MySQLParser.Table_referencesContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MySQLParser#table_reference}.
-	 * @param ctx the parse tree
-	 */
-	void enterTable_reference(MySQLParser.Table_referenceContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MySQLParser#table_reference}.
-	 * @param ctx the parse tree
-	 */
-	void exitTable_reference(MySQLParser.Table_referenceContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MySQLParser#table_factor1}.
-	 * @param ctx the parse tree
-	 */
-	void enterTable_factor1(MySQLParser.Table_factor1Context ctx);
-	/**
-	 * Exit a parse tree produced by {@link MySQLParser#table_factor1}.
-	 * @param ctx the parse tree
-	 */
-	void exitTable_factor1(MySQLParser.Table_factor1Context ctx);
-	/**
-	 * Enter a parse tree produced by {@link MySQLParser#table_factor2}.
-	 * @param ctx the parse tree
-	 */
-	void enterTable_factor2(MySQLParser.Table_factor2Context ctx);
-	/**
-	 * Exit a parse tree produced by {@link MySQLParser#table_factor2}.
-	 * @param ctx the parse tree
-	 */
-	void exitTable_factor2(MySQLParser.Table_factor2Context ctx);
-	/**
-	 * Enter a parse tree produced by {@link MySQLParser#table_factor3}.
-	 * @param ctx the parse tree
-	 */
-	void enterTable_factor3(MySQLParser.Table_factor3Context ctx);
-	/**
-	 * Exit a parse tree produced by {@link MySQLParser#table_factor3}.
-	 * @param ctx the parse tree
-	 */
-	void exitTable_factor3(MySQLParser.Table_factor3Context ctx);
-	/**
-	 * Enter a parse tree produced by {@link MySQLParser#table_factor4}.
-	 * @param ctx the parse tree
-	 */
-	void enterTable_factor4(MySQLParser.Table_factor4Context ctx);
-	/**
-	 * Exit a parse tree produced by {@link MySQLParser#table_factor4}.
-	 * @param ctx the parse tree
-	 */
-	void exitTable_factor4(MySQLParser.Table_factor4Context ctx);
-	/**
-	 * Enter a parse tree produced by {@link MySQLParser#table_atom}.
-	 * @param ctx the parse tree
-	 */
-	void enterTable_atom(MySQLParser.Table_atomContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MySQLParser#table_atom}.
-	 * @param ctx the parse tree
-	 */
-	void exitTable_atom(MySQLParser.Table_atomContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MySQLParser#join_clause}.
 	 * @param ctx the parse tree
@@ -487,94 +407,4 @@ public interface MySQLParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitJoin_condition(MySQLParser.Join_conditionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MySQLParser#index_hint_list}.
-	 * @param ctx the parse tree
-	 */
-	void enterIndex_hint_list(MySQLParser.Index_hint_listContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MySQLParser#index_hint_list}.
-	 * @param ctx the parse tree
-	 */
-	void exitIndex_hint_list(MySQLParser.Index_hint_listContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MySQLParser#index_options}.
-	 * @param ctx the parse tree
-	 */
-	void enterIndex_options(MySQLParser.Index_optionsContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MySQLParser#index_options}.
-	 * @param ctx the parse tree
-	 */
-	void exitIndex_options(MySQLParser.Index_optionsContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MySQLParser#index_hint}.
-	 * @param ctx the parse tree
-	 */
-	void enterIndex_hint(MySQLParser.Index_hintContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MySQLParser#index_hint}.
-	 * @param ctx the parse tree
-	 */
-	void exitIndex_hint(MySQLParser.Index_hintContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MySQLParser#index_list}.
-	 * @param ctx the parse tree
-	 */
-	void enterIndex_list(MySQLParser.Index_listContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MySQLParser#index_list}.
-	 * @param ctx the parse tree
-	 */
-	void exitIndex_list(MySQLParser.Index_listContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MySQLParser#partition_clause}.
-	 * @param ctx the parse tree
-	 */
-	void enterPartition_clause(MySQLParser.Partition_clauseContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MySQLParser#partition_clause}.
-	 * @param ctx the parse tree
-	 */
-	void exitPartition_clause(MySQLParser.Partition_clauseContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MySQLParser#partition_names}.
-	 * @param ctx the parse tree
-	 */
-	void enterPartition_names(MySQLParser.Partition_namesContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MySQLParser#partition_names}.
-	 * @param ctx the parse tree
-	 */
-	void exitPartition_names(MySQLParser.Partition_namesContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MySQLParser#partition_name}.
-	 * @param ctx the parse tree
-	 */
-	void enterPartition_name(MySQLParser.Partition_nameContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MySQLParser#partition_name}.
-	 * @param ctx the parse tree
-	 */
-	void exitPartition_name(MySQLParser.Partition_nameContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MySQLParser#subquery_alias}.
-	 * @param ctx the parse tree
-	 */
-	void enterSubquery_alias(MySQLParser.Subquery_aliasContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MySQLParser#subquery_alias}.
-	 * @param ctx the parse tree
-	 */
-	void exitSubquery_alias(MySQLParser.Subquery_aliasContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MySQLParser#subquery}.
-	 * @param ctx the parse tree
-	 */
-	void enterSubquery(MySQLParser.SubqueryContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MySQLParser#subquery}.
-	 * @param ctx the parse tree
-	 */
-	void exitSubquery(MySQLParser.SubqueryContext ctx);
 }
