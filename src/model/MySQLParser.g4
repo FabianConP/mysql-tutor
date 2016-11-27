@@ -77,7 +77,7 @@ schema_name
    ;
 
 select_clause
-   : SELECT (column_list_clause | ASTERISK) ( FROM (table_references | join_clause))? ( where_clause )?
+   : SELECT (MUL | column_list_clause) ( FROM (table_references | join_clause))? ( where_clause )?
    ;
 
 table_name
@@ -89,14 +89,10 @@ table_alias
    ;
 
 column_name
-   : (ID DOT)*  ID (AS ID)?
+   : ID (DOT ID)* (AS ID)?
    ;
 
 column_name_alias
-   : ID
-   ;
-
-index_name
    : ID
    ;
 
@@ -121,7 +117,6 @@ where_clause
    ;
 
 expression
-   //: expr ( expr_op expr )*
     : expr
    ;
 

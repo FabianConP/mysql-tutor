@@ -27,4 +27,11 @@ class DataType {
             return new StringBuilder();
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "DataType{" + "type=" + type + '}';
+    }
+    
+    
 }

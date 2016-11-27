@@ -3,11 +3,13 @@ insert into usuario values (12, 23)
 insert into usuario values (34, 33)
 insert into usuario values (21, 28)
 insert into usuario values (56, 54)
+select * from usuario as u1, usuario as u2
+select u1.id,u2.edad from usuario as u1, usuario as u2
 select id, edad from usuario
 select id, edad from usuario where (id = 12 || id = 21) and edad >= 25
 delete from usuario where edad = 33
-select id, edad from usuario
-insert into usuario values (34, 33)
-select id, edad from usuario
-update usuario set (id = 18) where id = 12
-select id, edad from usuario
+select * from usuario
+create table auth (id int, username varchar(40), password varchar(40))
+insert into auth values(12, "fdconejop", "passfdconejop")
+insert into auth values(56, "milderhern", "passmilderhern")
+select * from usuario as u, auth as a where u.id = a.id

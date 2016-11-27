@@ -1,5 +1,7 @@
 package model.logic;
 
+import java.util.Objects;
+
 public class Column {
 
     private String name;
@@ -70,6 +72,17 @@ public class Column {
     @Override
     protected Object clone(){
         return (Object) new Column(name, type, nullable, autoIncrement);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Column o = (Column) obj;
+        return alias.equals(o.alias);
+    }
+
+    @Override
+    public int hashCode() {
+        return alias.hashCode();
     }
 
     @Override
