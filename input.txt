@@ -1,4 +1,1 @@
-select Orders.OrderID, Customers.CustomerName, Orders.OrderDate
-from Orders
-inner join Customers
-on Orders.CustomerID=Customers.CustomerID
+create table usuario (id int, edad int)
