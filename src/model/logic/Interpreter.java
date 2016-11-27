@@ -46,6 +46,9 @@ public class Interpreter {
         data.add(row);
         data.add(row);
         data.add(row);
+        data.add(row);
+        data.add(row);
+        data.add(row);
         
         
         result.setType(QueryResult.Type.SELECT);

@@ -1,5 +1,6 @@
-package app;
+package app.controller;
 
+import app.MySQLTutor;
 import app.model.Field;
 import app.model.TableManagement;
 import app.view.RootLayoutController;
@@ -44,7 +45,7 @@ public class SelectView extends View {
 
         controller = loader.getController();
 
-        controller.setMySQLTutorReference(tutor);
+        controller.setTutorReference(tutor);
         controller.getCrossTableManagement().setup(result.getColumns(), data);
         controller.getFinalTableManagement().setup(result.getColumns());
     }
@@ -55,25 +56,23 @@ public class SelectView extends View {
         TableManagement finalManagement = controller.getFinalTableManagement();
         List<SingleResult> results = result.getResults();
         
-        String greenStyle = "-fx-background-color: green";
-        String redStyle = "-fx-background-color: red";
-        
         for (currentRowAnimation = startingRowAnimation; 
                 currentRowAnimation < results.size(); ++currentRowAnimation) {
             SingleResult r = results.get(currentRowAnimation);
+            crossManagement.markRow(currentRowAnimation, STYLE_BLUE);
+            Thread.sleep(miliSeconds);
             if ( r.isSuccessful() ) {
-                crossManagement.markRow(currentRowAnimation, greenStyle);
-                Thread.sleep(miliSeconds);
+                crossManagement.markRow(currentRowAnimation, STYLE_OCEAN);
                 finalManagement.addRow(new Field(r.getData()));
-                finalManagement.markRow(finalManagement.getData().size() - 1, redStyle);
+                finalManagement.markRow(finalManagement.getData().size() - 1, STYLE_OCEAN);
                 Thread.sleep(miliSeconds);
             } else {
-                crossManagement.markRow(currentRowAnimation, redStyle);
+                crossManagement.markRow(currentRowAnimation, STYLE_CHILLI);
             }
         }
         
-        crossManagement.markRow(crossManagement.getData().size(), greenStyle);
-        finalManagement.markRow(finalManagement.getData().size(), greenStyle);
+        crossManagement.markRow(crossManagement.getData().size(), null);
+        finalManagement.markRow(finalManagement.getData().size(), null);
     }
 
     @Override
@@ -85,5 +84,11 @@ public class SelectView extends View {
     public void resumeAnimation(int miliSeconds) throws InterruptedException {
         animate(miliSeconds);
     }
+
+    public SelectController getController() {
+        return controller;
+    }
+    
+    
     
 }

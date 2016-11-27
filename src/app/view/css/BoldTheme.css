@@ -135,7 +135,7 @@
 }
 
 .button:hover {
-    -fx-background-color: derive(-fx-background, 20%);
+    -fx-background-color: -fx-button-over-color;
 }
 
 .button:pressed, .button:default:hover:pressed {

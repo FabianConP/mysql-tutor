@@ -6,8 +6,11 @@
 package app.view;
 
 import app.MySQLTutor;
-import app.SelectView;
-import app.View;
+import app.controller.CreateView;
+import app.controller.InsertView;
+import app.controller.SelectView;
+import app.controller.UpdateView;
+import app.controller.View;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
@@ -52,6 +55,8 @@ public class RootLayoutController {
     private final String SELECT_SOURCE;
     private final String UPDATE_SOURCE;
     private final String CREATE_SOURCE;
+    private final String INSERT_SOURCE;
+    
     
     private View currentView;
     
@@ -63,6 +68,7 @@ public class RootLayoutController {
         SELECT_SOURCE = "view/Select.fxml";
         UPDATE_SOURCE = "view/Update.fxml";
         CREATE_SOURCE = "view/Create.fxml";
+        INSERT_SOURCE = "view/Insert.fxml";
         DEFAULT_SLIDER_VALUE = 80;
     }
     
@@ -166,14 +172,17 @@ public class RootLayoutController {
                 currentView = new SelectView(tutor, SELECT_SOURCE);                
                 break;
             case CREATE:
-                
+                currentView = new CreateView(tutor, CREATE_SOURCE);
                 break;
             case UPDATE:
-                
+                currentView = new UpdateView(tutor, UPDATE_SOURCE);
+                break;
+            case INSERT:
+                currentView = new InsertView(tutor, INSERT_SOURCE);
                 break;
                 
             default:
-                
+                currentView = new CreateView(tutor, CREATE_SOURCE);
         }
         
         currentView.setUp(result);
