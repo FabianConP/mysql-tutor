@@ -7,7 +7,7 @@
         
     -fx-code-area-lines-color: #000000;
         
-    -fx-has-caret-color: #E9EFF8;
+    -fx-has-caret-color: #056571;
 }
 
 
@@ -162,8 +162,4 @@
 .button:default {
     -fx-background-color: -fx-focus-color;
     -fx-text-fill: -fx-background;
-}
-
-.text-flow:has-caret {
-    -fx-background-color: -fx-has-caret-color;
 }

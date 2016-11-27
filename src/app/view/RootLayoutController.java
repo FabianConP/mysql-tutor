@@ -162,7 +162,7 @@ public class RootLayoutController {
                 });
         
         codeArea.replaceText(0, 0, sampleCode);
-        codeArea.moveTo(0);
+        codeArea.moveTo(0, 0);
         
         codePane.setCenter(codeArea); 
         speedSlider.setValue(DEFAULT_SLIDER_VALUE);
@@ -212,6 +212,8 @@ public class RootLayoutController {
     
     @FXML
     private void runCommand () throws IOException {
+        if ( codeArea.getCurrentParagraph() < codeArea.getParagraphs().size() - 1 )
+            codeArea.moveTo(codeArea.getCurrentParagraph() + 1, 0);
         
         pauseResumeButton.setText("Pause");
         enableDisableButtons();
