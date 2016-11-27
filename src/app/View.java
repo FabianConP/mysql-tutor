@@ -26,5 +26,5 @@ public abstract class View {
     }
     
     public abstract void setUp (QueryResult result);
-    public abstract void animate ();
+    public abstract void animate (int miliSeconds) throws InterruptedException;
 }

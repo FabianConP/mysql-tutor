@@ -5,11 +5,16 @@
  */
 package app.model;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.paint.Color;
 
 /**
  *
@@ -18,15 +23,22 @@ import javafx.scene.control.TableView;
 public class TableManagement {
     private List<TableColumn<Field, String>> columns;
     private TableView<Field> table;
+    private ObservableList<Field> data;
 
     public TableManagement(TableView<Field> table) {
         this.table = table;
         columns = new ArrayList<>();
     }
     
+    public void setup (List<String> columnNames) {
+        setup(columnNames, null);
+    }
+    
     public void setup (List<String> columnNames,
     		ObservableList<Field> data) {
-    	//Clears the current columns
+        this.data = data;
+    	
+        //Clears the current columns
     	table.getColumns().removeAll(columns);
 
     	for ( String name : columnNames ) {
@@ -41,4 +53,53 @@ public class TableManagement {
 
         table.setItems(data);
     }
+    
+    public void markRow (int row, String style) {
+        for ( TableColumn<Field,String> col : columns ) {
+            col.setCellValueFactory(cellData -> cellData.getValue().getColumnProperty());
+            col.setCellFactory(column -> {
+                return new TableCell<Field, String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);  
+
+                        if (item == null || empty) {
+                            setText(null);
+                            setStyle("");
+                        } else {
+                            setText(item);
+                            if (getIndex() == row) {
+                                setStyle(style);
+                            }
+                        }
+                    }
+                };
+            });
+        }
+
+    }
+
+    public List<TableColumn<Field, String>> getColumns() {
+        return columns;
+    }
+
+    public void setColumns(List<TableColumn<Field, String>> columns) {
+        this.columns = columns;
+    }
+
+    public TableView<Field> getTable() {
+        return table;
+    }
+
+    public void setTable(TableView<Field> table) {
+        this.table = table;
+    }
+    
+    public void addRow (Field field) {
+        if (data == null) 
+            data = FXCollections.observableArrayList();
+        data.add(field);
+        table.setItems(data);
+    }
+    
 }

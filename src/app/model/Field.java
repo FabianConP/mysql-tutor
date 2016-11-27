@@ -1,12 +1,8 @@
 package app.model;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -19,10 +15,10 @@ public class Field {
         this(new ArrayList<>());
     }
 
-    public Field(ArrayList<Object> data) {
+    public Field(List<Object> data) {
         this.data = new ArrayList<>();
-        for ( int i = 0; i < data.size(); ++i ) {
-            this.data.add(new SimpleStringProperty((String) data.get(i)));
+        for (Object o : data) {
+            this.data.add(new SimpleStringProperty((String) o));
         }
         currentProperty = 0;
     }

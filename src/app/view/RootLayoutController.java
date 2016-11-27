@@ -11,6 +11,8 @@ import app.View;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.fxml.FXML;
@@ -149,7 +151,17 @@ public class RootLayoutController {
         }
         
         currentView.setUp(result);
-        currentView.animate();
+        
+        new Thread() {
+            @Override
+            public void run () {
+                try {
+                    currentView.animate(1000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(RootLayoutController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }.start();
     }
 
     public void setMySQLReference(MySQLTutor tutor) {
