@@ -212,17 +212,19 @@ public class RootLayoutController {
     
     @FXML
     private void runCommand () throws IOException {
-        if ( codeArea.getCurrentParagraph() < codeArea.getParagraphs().size() - 1 )
-            codeArea.moveTo(codeArea.getCurrentParagraph() + 1, 0);
-        
         pauseResumeButton.setText("Pause");
         enableDisableButtons();
         
         String queryString = codeArea.getText();
+        
         int fromIndex = codeArea.getCaretPosition() - codeArea.getCaretColumn();
+        int toIndex = queryString.indexOf(";", fromIndex);
+        
         queryString = queryString.
-                substring(fromIndex, 
-                Math.max(queryString.indexOf(';', fromIndex), queryString.length()));
+                substring( fromIndex, toIndex != -1 ? toIndex : queryString.length() );
+        
+        if ( codeArea.getCurrentParagraph() < codeArea.getParagraphs().size() - 1 )
+            codeArea.moveTo(codeArea.getCurrentParagraph() + 1, 0);
         
         Interpreter.runCommand(queryString);
         
