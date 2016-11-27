@@ -8,8 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import model.QueryResult;
+import model.QueryResult.Type;
+import model.SingleResult;
 import model.generated.MySQLParser;
 import model.generated.MySQLParserBaseVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -24,6 +25,18 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
         tables = new HashMap<>();
         row = new HashMap<>();
         columnAssig = new HashMap<>();
+    }
+    
+    private void initQueryResult(Type type){
+        Interpreter.result = new QueryResult(type);
+    }
+    
+    private void addHeaderResult(String column){
+        Interpreter.result.getColumns().add(column);
+    }
+    
+    private void addSingleResult(Object[] data, String transate, boolean successful){
+        Interpreter.result.getResults().add(new SingleResult(Util.arrayAsList(data), transate, successful));
     }
 
     @Override
@@ -63,10 +76,20 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
                     if (!tables.containsKey(table.getDef().getName()))
                         ExceptionHandler.generalException(ctx, "Table", table.getDef().getName(), " does not exist");
                 Table crossTable = Table.crossTables(tableReferences.toArray(new Table[tableReferences.size()]));
+                
+                //Start query result
+                initQueryResult(Type.SELECT);
+                columnList.forEach(column -> addHeaderResult(column.getAlias()));
+                
                 Table whereFilteredTable = crossTable;
                 if (ctx.where_clause() != null)
                     whereFilteredTable = filterTableByWhereClause(crossTable, ctx.where_clause());
+                else{
+                    crossTable.getData().forEach(data -> addSingleResult(data, "", true));
+                }
                 Table columnWhereFilteredTable = filterTableByColumns(whereFilteredTable, columns);
+                //End query result
+                
                 System.out.println("Selecting");
                 System.out.println(columnWhereFilteredTable);
             }
@@ -105,8 +128,12 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             for (int i = 0; i < fullTable.getData().size(); i++) {
                 row = fullTable.getRowAsMap(i);
                 boolean condition = (Boolean) visitWhere_clause(whereClause);
-                if (condition)
+                if (condition){
+                    addSingleResult(fullTable.getData().get(i), "", true);
                     filteredTable.insert(Util.arrayAsList(fullTable.getData().get(i)));
+                }else{
+                    addSingleResult(fullTable.getData().get(i), "", false);
+                }
             }
             return filteredTable;
         } catch (Exception ex) {
