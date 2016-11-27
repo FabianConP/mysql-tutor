@@ -50,9 +50,9 @@ public class Table {
         return index + 1;
     }
 
-    public void insert(List<String> columns, List<Object> values) throws Exception {
-        if (Util.checkColumns(def.getColumns(), columns))
-            ExceptionHandler.columnFieldException(def.getColumns(), columns);
+    public void insert(List<Column> columns, List<Object> values) throws Exception {
+//        if (Util.checkColumns(def.getColumns(), columns))
+//            ExceptionHandler.columnFieldException(def.getColumns(), columns);
         List<Column> colsDef = def.getColumns();
         Object[] row = new Object[colsDef.size()];
         int processed = 0;
@@ -60,7 +60,7 @@ public class Table {
             Column colDef = colsDef.get(i);
             if (colDef.isAutoIncrement()) {
                 row[i] = getNextAIValue(i);
-            } else if (colDef.getName().equals(columns.get(processed))) {
+            } else if (colDef.getAlias().equals(columns.get(processed).getAlias())) {
                 // Check if match the data
                 if (Util.matchData(colDef.getType().getDataType(), values.get(processed))) {
                     row[i] = values.get(i);
@@ -121,31 +121,37 @@ public class Table {
         return map;
     }
 
-    public Table crossTables(Table... tables) {
-        Table crossTable = null;
+    public static Table crossTables(Table... tables) {
         int numCols = 0;
         TableDefinition tableDef = new TableDefinition();
         Set<String> tableNames = new HashSet<>();
+        StringBuilder crossTableName = new StringBuilder();
         for (Table table : tables) {
             int idCurTable = 0;
             while (tableNames.contains(table.getDef().getName() + idCurTable))
                 idCurTable++;
             String tableName = table.getDef().getName() + idCurTable;
+            if(crossTableName.length() > 0)
+                crossTableName.append('.');
+            crossTableName.append(tableName);
             tableNames.add(tableName);
             numCols += table.getDef().getColumns().size();
             for (Column column : table.getDef().getColumns()) {
                 Column newCol = (Column) column.clone();
                 newCol.setName(tableName + "." + newCol.getName());
+                newCol.setAlias(tableName + "." + newCol.getName());
                 tableDef.getColumns().add(column);
             }
         }
         Object[] data = new Object[numCols];
-        Table table = new Table();
+        tableDef.setName(crossTableName.toString());
+        tableDef.setAlias(crossTableName.toString());
+        Table table = new Table(tableDef);
         generateCrossTables(table, tables, 0, 0, data);
-        return crossTable;
+        return table;
     }
 
-    private void generateCrossTables(Table table, Table[] tables, int indexTable, int numCols, Object[] data) {
+    private static void generateCrossTables(Table table, Table[] tables, int indexTable, int numCols, Object[] data) {
         if (indexTable == tables.length) {
             table.data.add(data.clone());
             return;
@@ -157,6 +163,21 @@ public class Table {
                 data[numColsNewRow++] = element;
             generateCrossTables(table, tables, indexTable + 1, numColsNewRow, data);
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder r = new StringBuilder();
+        r.append("Table def: ").append(def).append('\n');
+        r.append("----------------------------------------\n");
+        data.forEach(row -> {
+            r.append('|');
+            for (Object element : row)
+                r.append(element).append('\t');
+            r.append('|').append('\n');
+        });
+        r.append("----------------------------------------\n");
+        return r.toString();
     }
 
 }

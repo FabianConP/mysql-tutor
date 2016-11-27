@@ -238,4 +238,16 @@ public interface MySQLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitTable_references(MySQLParser.Table_referencesContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MySQLParser#join_clause}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitJoin_clause(MySQLParser.Join_clauseContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MySQLParser#join_condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitJoin_condition(MySQLParser.Join_conditionContext ctx);
 }

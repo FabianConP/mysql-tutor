@@ -13,19 +13,20 @@ public class Column {
 
     public Column(String name, String alias, DataType datatype, boolean nullable, boolean autoIncrement) {
         this.name = name;
+        this.alias = alias;
         this.type = datatype;
         this.nullable = nullable;
         this.autoIncrement = autoIncrement;
     }
     
     public Column(String name, DataType datatype, boolean nullable, boolean autoIncrement) {
-        this.name = name;
-        this.alias = name;
-        this.type = datatype;
-        this.nullable = nullable;
-        this.autoIncrement = autoIncrement;
+        this(name, name, datatype, nullable, autoIncrement);
     }
 
+    public Column(String name, String alias){
+        this(name, alias, new DataType(), false, false);
+    }
+    
     public String getName() {
         return name;
     }
@@ -70,7 +71,10 @@ public class Column {
     protected Object clone(){
         return (Object) new Column(name, type, nullable, autoIncrement);
     }
-    
-    
 
+    @Override
+    public String toString() {
+        return "Column{" + "name=" + name + ", alias=" + alias + ", type=" + type + ", nullable=" + nullable + ", autoIncrement=" + autoIncrement + '}';
+    }
+    
 }

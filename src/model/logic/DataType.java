@@ -18,7 +18,7 @@ class DataType {
     
     public Object getDataType(){
         if(type.equals(INTEGER)){
-            return 0;
+            return 0.0;
         }else if(type.equals(DOUBLE)){
             return 0.0;
         }else if(type.equals(VARCHAR))

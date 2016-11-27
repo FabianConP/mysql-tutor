@@ -1,6 +1,8 @@
 package model.logic;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class Util {
 
@@ -60,5 +62,70 @@ public class Util {
         if (Math.abs(dif) < EPS)
             return 0;
         return dif < 0 ? -1 : 1;
+    }
+
+    public static List<Object> arrayAsList(Object[] array) {
+        List<Object> list = new ArrayList<>(array.length);
+        for (Object element : array)
+            list.add(element);
+        return list;
+    }
+
+    public static Object[] listAsArray(List<Object> list) {
+        Object[] array = new Object[list.size()];
+        for (int i = 0; i < list.size(); i++)
+            array[i] = list.get(i);
+        return array;
+    }
+
+    public static Object cmpOp(int cmp, String op) {
+        Object r = null;
+        switch (op) {
+            case "=":
+                r = cmp == 0;
+                break;
+            case "<":
+                r = cmp == -1;
+                break;
+            case ">":
+                r = cmp == 1;
+                break;
+            case "!=":
+                r = cmp != 0;
+                break;
+            case "<=":
+                r = cmp <= 0;
+                break;
+            case ">=":
+                r = cmp >= 0;
+                break;
+        }
+        return r;
+    }
+
+    public static Object cmpNumeric(double a, double b, String op) {
+        int cmp = cmp(a, b);
+        return cmpOp(cmp, op);
+    }
+
+    public static Object cmpString(String a, String b, String op) {
+        int cmp = a.compareTo(b);
+        return cmpOp(cmp, op);
+    }
+
+    public static Object cmpBoolean(boolean a, boolean b, String op) {
+        Object r = null;
+        switch (op) {
+            case "AND":
+                r = a && b;
+                break;
+            case "XOR":
+                r = a ^ b;
+                break;
+            case "OR":
+                r = a || b;
+                break;
+        }
+        return r;
     }
 }

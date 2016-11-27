@@ -387,4 +387,24 @@ public interface MySQLParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitTable_references(MySQLParser.Table_referencesContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MySQLParser#join_clause}.
+	 * @param ctx the parse tree
+	 */
+	void enterJoin_clause(MySQLParser.Join_clauseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MySQLParser#join_clause}.
+	 * @param ctx the parse tree
+	 */
+	void exitJoin_clause(MySQLParser.Join_clauseContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MySQLParser#join_condition}.
+	 * @param ctx the parse tree
+	 */
+	void enterJoin_condition(MySQLParser.Join_conditionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MySQLParser#join_condition}.
+	 * @param ctx the parse tree
+	 */
+	void exitJoin_condition(MySQLParser.Join_conditionContext ctx);
 }

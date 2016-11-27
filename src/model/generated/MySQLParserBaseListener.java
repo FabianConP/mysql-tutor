@@ -467,6 +467,30 @@ public class MySQLParserBaseListener implements MySQLParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitTable_references(MySQLParser.Table_referencesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterJoin_clause(MySQLParser.Join_clauseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitJoin_clause(MySQLParser.Join_clauseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterJoin_condition(MySQLParser.Join_conditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitJoin_condition(MySQLParser.Join_conditionContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

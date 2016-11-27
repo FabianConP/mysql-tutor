@@ -49,7 +49,7 @@ drop_table_clause
     ;
 
 insert_clause
-    : INSERT INTO table_name column_list VALUES list_values
+    : INSERT INTO table_name column_list? VALUES list_values
     ;
 
 list_values
@@ -77,7 +77,7 @@ schema_name
    ;
 
 select_clause
-   : SELECT column_list_clause ( FROM table_references )? ( where_clause )?
+   : SELECT (column_list_clause | ASTERISK) ( FROM (table_references | join_clause))? ( where_clause )?
    ;
 
 table_name
@@ -85,11 +85,11 @@ table_name
    ;
 
 table_alias
-   : ID
+   : ID (AS ID)?
    ;
 
 column_name
-   : (ID DOT)*  ID
+   : (ID DOT)*  ID (AS ID)?
    ;
 
 column_name_alias
@@ -121,16 +121,18 @@ where_clause
    ;
 
 expression
-   : expr ( expr_op expr )*
+   //: expr ( expr_op expr )*
+    : expr
    ;
 
 expr
     : element
+    | expr relational_op expr
+    | expr expr_op expr
     | expr mul_op expr
     | expr SUM expr
     | expr RES expr
     | RES expr
-    | expr relational_op expr
     | LPAREN expr RPAREN
     ;
 
@@ -143,7 +145,7 @@ relational_op
    ;
 
 expr_op
-   : AND | XOR | OR | NOT
+   : AND | XOR | OR // | NOT
    ;
 
 mul_op
@@ -162,25 +164,23 @@ is_or_is_not
 
 table_references
    //: table_reference ( ( COMMA table_reference ) | join_clause )*
-    :
+    : table_alias (COMMA table_alias)*
    ;
 
-/*
 join_clause
-   : ( ( INNER | CROSS )? JOIN table_atom ( join_condition )? ) | ( STRAIGHT_JOIN table_atom ( ON expression )? ) | ( ( LEFT | RIGHT ) ( OUTER )? JOIN table_factor4 join_condition ) | ( NATURAL ( ( LEFT | RIGHT ) ( OUTER )? )? JOIN table_atom )
+   //: ( ( INNER | CROSS )? JOIN table_atom ( join_condition )? ) | ( STRAIGHT_JOIN table_atom ( ON expression )? ) | ( ( LEFT | RIGHT ) ( OUTER )? JOIN table_factor4 join_condition ) | ( NATURAL ( ( LEFT | RIGHT ) ( OUTER )? )? JOIN table_atom )
+    :
    ;
 
 join_condition
    : ( ON expression ( expr_op expression )* ) | ( USING column_list )
    ;
 
+/*
 expr
    : left_element relational_op right_element | target_element between_op left_element AND right_element | target_element is_or_is_not NULL
    ;
 
-table_reference
-   : table_factor1 | table_atom
-   ;
 
 table_factor1
    : table_factor2 ( ( INNER | CROSS )? JOIN table_atom ( join_condition )? )?

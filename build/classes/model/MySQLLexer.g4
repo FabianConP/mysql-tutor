@@ -77,6 +77,10 @@ SET
 DELETE
     : 'delete'
     ;
+
+AS
+    : 'as'
+    ;
 // End mysql-tutor
 
 
