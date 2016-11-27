@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package app.view;
 
 import app.MySQLTutor;
@@ -20,12 +15,13 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -60,6 +56,8 @@ public class RootLayoutController {
     private Button runCommandButton;
     @FXML
     private Button stopButton;
+    @FXML
+    private Button reloadButton;
     
     private CodeArea codeArea;
     
@@ -75,12 +73,23 @@ public class RootLayoutController {
     
     private AnimationThread animationThread;
     
+    private ImageView playImage, pauseImage, stopImage, reloadImage;
+    
     public RootLayoutController() {
         SELECT_SOURCE = "view/Select.fxml";
         UPDATE_SOURCE = "view/Update.fxml";
         CREATE_SOURCE = "view/Create.fxml";
         INSERT_SOURCE = "view/Insert.fxml";
         DEFAULT_SLIDER_VALUE = 80;
+        
+        playImage = new ImageView(new Image(
+                RootLayoutController.class.getResourceAsStream("img/play-button.png")));
+        pauseImage = new ImageView(new Image(
+                RootLayoutController.class.getResourceAsStream("img/pause-button.png")));
+        stopImage = new ImageView(new Image(
+                RootLayoutController.class.getResourceAsStream("img/stop-button.png")));
+        reloadImage = new ImageView(new Image(
+                RootLayoutController.class.getResourceAsStream("img/reload-button.png")));
     }
     
     private static final String[] KEYWORDS = new String[] {
@@ -163,14 +172,30 @@ public class RootLayoutController {
         
         codeArea.replaceText(0, 0, sampleCode);
         codeArea.moveTo(0, 0);
+        codeArea.setOnKeyPressed(event -> {
+                if (event.isControlDown() && event.getCode() == KeyCode.ENTER) {
+                    try {
+                        runCommand();
+                    } catch (IOException ex) {
+                        Logger.getLogger(RootLayoutController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        );
         
-        codePane.setCenter(codeArea); 
+        codePane.setCenter(codeArea);        
+        
         speedSlider.setValue(DEFAULT_SLIDER_VALUE);
         animationThread = new AnimationThread();
         
         runCommandButton.setDisable(false);
+        
         pauseResumeButton.setDisable(true);
+        pauseResumeButton.setGraphic(playImage);
         stopButton.setDisable(true);
+        stopButton.setGraphic(stopImage);
+        reloadButton.setDisable(true);
+        reloadButton.setGraphic(reloadImage);
     }
     
     
@@ -203,18 +228,7 @@ public class RootLayoutController {
         stopButton.setDisable(!stopButton.isDisabled());
     }
     
-    @FXML 
-    private void onKeyPressed (KeyEvent event) throws IOException {
-        if ( !runCommandButton.isDisabled() && event.getCode() == KeyCode.L )
-            runCommand();
-    }
-    
-    
-    @FXML
-    private void runCommand () throws IOException {
-        pauseResumeButton.setText("Pause");
-        enableDisableButtons();
-        
+    private String getLineCommand () {
         String queryString = codeArea.getText();
         
         int fromIndex = codeArea.getCaretPosition() - codeArea.getCaretColumn();
@@ -223,13 +237,31 @@ public class RootLayoutController {
         queryString = queryString.
                 substring( fromIndex, toIndex != -1 ? toIndex : queryString.length() );
         
+        return queryString;
+    }
+    
+    private void moveCaretToNextParagraph () {
         if ( codeArea.getCurrentParagraph() < codeArea.getParagraphs().size() - 1 )
             codeArea.moveTo(codeArea.getCurrentParagraph() + 1, 0);
+    }
+    
+    private void moveCaretToPreviousParagraph () {
+        if ( codeArea.getCurrentParagraph() > 0 )
+            codeArea.moveTo(codeArea.getCurrentParagraph() - 1, 0);
+    }
+    
+    @FXML
+    private void runCommand () throws IOException {
+        reloadButton.setDisable(false);
+        pauseResumeButton.setGraphic(pauseImage);
+        enableDisableButtons();
+        
+        String queryString = getLineCommand();
+        moveCaretToNextParagraph();
         
         Interpreter.runCommand(queryString);
         
         QueryResult result = Interpreter.result;
-        
         switch (result.getType()) {
             case SELECT:
                 currentView = new SelectView(tutor, SELECT_SOURCE);                
@@ -258,6 +290,11 @@ public class RootLayoutController {
     }
     
     private class AnimationThread extends Thread {
+
+        public AnimationThread() {
+            setName("animation-thread");
+        }
+        
         @Override
         public void run () {
             try {
@@ -265,7 +302,7 @@ public class RootLayoutController {
             } catch (InterruptedException ex) {
                 Logger.getLogger(RootLayoutController.class.getName()).log(Level.SEVERE, null, ex);
             }
-            pauseResumeButton.setText("Pause");
+//            pauseResumeButton.setGraphic(playImage);
             enableDisableButtons();
         }
     }
@@ -275,11 +312,11 @@ public class RootLayoutController {
         if ( animationThread.isAlive() ) {
             currentView.pauseAnimation();
             animationThread.stop();
-            pauseResumeButton.setText("Resume");
+            pauseResumeButton.setGraphic(playImage);
         } else {
             animationThread = new AnimationThread();
             animationThread.start();
-            pauseResumeButton.setText("Pause");
+            pauseResumeButton.setGraphic(pauseImage);
         }
     }
     
@@ -289,5 +326,14 @@ public class RootLayoutController {
             animationThread.stop();
         }
         enableDisableButtons();
+    }
+    
+    @FXML
+    private void reloadAnimation () throws InterruptedException, IOException { 
+        if (!runCommandButton.isDisabled())
+            enableDisableButtons();
+        stopAnimation();
+        moveCaretToPreviousParagraph();
+        runCommand();
     }
 }

@@ -2,8 +2,9 @@ package model.logic;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
 import model.QueryResult;
+import model.SingleResult;
 import model.generated.MySQLLexer;
 import model.generated.MySQLParser;
 
@@ -19,7 +20,7 @@ public class Interpreter {
     public static void runCommand (String command) {
         System.out.println(command);
         
-        ANTLRInputStream input = new ANTLRInputStream(command);
+        ANTLRInputStream input = new ANTLRInputStream("select a from b");
 
         MySQLLexer lexer = new MySQLLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -28,7 +29,7 @@ public class Interpreter {
         MyVisitor<Object> loader = new MyVisitor<>();
         loader.visit(tree);
         
-        /*result = new QueryResult();
+        result = new QueryResult();
         
         
         //Dummy data
@@ -50,11 +51,13 @@ public class Interpreter {
         data.add(row);
         data.add(row);
         
-        
-        result.setType(QueryResult.Type.SELECT);
+        if (command.equals("xd"))
+            result.setType(QueryResult.Type.SELECT);
+        else
+            result.setType(QueryResult.Type.CREATE);
         result.setColumns(columnNames);
         result.setResults(data);
-        */
+        
     }
     
     public static void main(String[] args) throws IOException{

@@ -163,3 +163,9 @@
     -fx-background-color: -fx-focus-color;
     -fx-text-fill: -fx-background;
 }
+
+.control-button, .control-button:pressed, .control-button:default:hover:pressed, 
+.control-button:hover, .control-button:focused, .control-button:default:hover:pressed {
+    -fx-border-width: 0;
+    -fx-background-color: -fx-background;
+}

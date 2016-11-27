@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane onKeyPressed="#onKeyPressed" prefHeight="600.0" prefWidth="1100.0" styleClass="background" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.view.RootLayoutController">
+<BorderPane prefHeight="600.0" prefWidth="1100.0" styleClass="background" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.view.RootLayoutController">
    <top>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -87,36 +87,33 @@
                     <buttons>
                       <Button fx:id="runCommandButton" mnemonicParsing="false" onAction="#runCommand" prefHeight="33.0" prefWidth="821.0" text="Execute command" />
                         <BorderPane prefHeight="200.0" prefWidth="200.0">
-                           <top>
+                           <center>
                               <GridPane BorderPane.alignment="CENTER">
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                 </columnConstraints>
                                 <rowConstraints>
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label text="Speed">
-                                       <GridPane.margin>
-                                          <Insets left="20.0" right="20.0" />
-                                       </GridPane.margin>
-                                       <graphic>
-                                          <Slider fx:id="speedSlider" prefHeight="17.0" prefWidth="283.0" />
-                                       </graphic>
-                                    </Label>
-                                    <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                    <ButtonBar buttonMinWidth="32.0" styleClass="control-button">
                                       <buttons>
-                                        <Button fx:id="pauseResumeButton" mnemonicParsing="false" onAction="#pauseAnimation" prefHeight="70.0" prefWidth="375.0" text="Pause" />
-                                          <Button fx:id="stopButton" mnemonicParsing="false" onAction="#stopAnimation" text="Stop" />
+                                          <Button fx:id="pauseResumeButton" mnemonicParsing="false" onAction="#pauseAnimation" styleClass="control-button" />
+                                          <Button fx:id="stopButton" mnemonicParsing="false" onAction="#stopAnimation" styleClass="control-button" />
+                                          <Button fx:id="reloadButton" mnemonicParsing="false" onAction="#reloadAnimation" styleClass="control-button" />
+                                          <Label text="Speed">
+                                             <graphic>
+                                                <Slider fx:id="speedSlider" prefHeight="17.0" prefWidth="283.0" />
+                                             </graphic>
+                                          </Label>
                                       </buttons>
                                        <GridPane.margin>
-                                          <Insets right="20.0" />
+                                          <Insets left="60.0" right="120.0" />
                                        </GridPane.margin>
                                     </ButtonBar>
                                  </children>
                               </GridPane>
-                           </top>
+                           </center>
                         </BorderPane>
                     </buttons>
                      <GridPane.margin>

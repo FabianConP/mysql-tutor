@@ -39,7 +39,6 @@ public class MySQLTutor extends Application {
     public void start(Stage primaryStage) throws FileNotFoundException, IOException {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("MySQLTutor");
-
         initRootLayout();   
     }
 
