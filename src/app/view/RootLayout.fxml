@@ -10,6 +10,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -149,4 +150,7 @@
          </bottom>
       </BorderPane>
    </bottom>
+   <effect>
+      <InnerShadow height="30.11" radius="14.555" width="30.11" />
+   </effect>
 </BorderPane>

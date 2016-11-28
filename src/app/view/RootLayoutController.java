@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.animation.FadeTransition;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -29,7 +30,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
+import javafx.stage.Popup;
+import javafx.util.Duration;
 import model.QueryResult;
 import model.logic.Interpreter;
 import org.fxmisc.richtext.CodeArea;
@@ -281,7 +285,7 @@ public class RootLayoutController {
     }
     
     @FXML
-    private void runCommand () throws IOException {       
+    private void runCommand () throws IOException {        
         String queryString = getLineCommand();
         moveCaretToNextParagraph();
         

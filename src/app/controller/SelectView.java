@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableCell;
@@ -67,10 +68,10 @@ public class SelectView extends View {
                 crossManagement.markRow(currentRowAnimation, STYLE_OCEAN);
                 finalManagement.addRow(new Field(r.getData()));
                 finalManagement.markRow(finalManagement.getData().size() - 1, STYLE_OCEAN);
-                Thread.sleep(miliSeconds);
+                Thread.sleep(miliSeconds / 2);
             } else {
                 crossManagement.markRow(currentRowAnimation, STYLE_CHILLI);
-                Thread.sleep(miliSeconds);
+                Thread.sleep(miliSeconds / 2);
             }
         }  
        

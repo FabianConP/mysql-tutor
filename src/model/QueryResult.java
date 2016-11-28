@@ -59,7 +59,7 @@ public class QueryResult {
         for (SingleResult single : results) {
             for (Object cell : single.getData())
                 r.append(cell.toString()).append('\t');
-            r.append("|\t").append(single.getTransate()).append('\t').append(single.isSuccessful()).append('\n');
+            r.append("|\t").append(single.getTranslate()).append('\t').append(single.isSuccessful()).append('\n');
         }
         return "QueryResult{" + "type=" + type + ", columns=\n" + cols.toString() + ", results=\n" + r.toString() + '}';
     }
