@@ -26,16 +26,16 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
         row = new HashMap<>();
         columnAssig = new HashMap<>();
     }
-    
-    private void initQueryResult(Type type){
+
+    private void initQueryResult(Type type) {
         Interpreter.result = new QueryResult(type);
     }
-    
-    private void addHeaderResult(String column){
+
+    private void addHeaderResult(String column) {
         Interpreter.result.getColumns().add(column);
     }
-    
-    private void addSingleResult(Object[] data, String transate, boolean successful){
+
+    private void addSingleResult(Object[] data, String transate, boolean successful) {
         Interpreter.result.getResults().add(new SingleResult(Util.arrayAsList(data), transate, successful));
     }
 
@@ -72,24 +72,24 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
 
             } else if (ctx.table_references() != null) {
                 List<Table> tableReferences = (List<Table>) visitTable_references(ctx.table_references());
-                for (Table table : tableReferences) 
+                for (Table table : tableReferences)
                     if (!tables.containsKey(table.getDef().getName()))
                         ExceptionHandler.generalException(ctx, "Table", table.getDef().getName(), " does not exist");
                 Table crossTable = Table.crossTables(tableReferences.toArray(new Table[tableReferences.size()]));
-                
+
                 //Start query result
                 initQueryResult(Type.SELECT);
                 columnList.forEach(column -> addHeaderResult(column.getAlias()));
-                
+
                 Table whereFilteredTable = crossTable;
                 if (ctx.where_clause() != null)
                     whereFilteredTable = filterTableByWhereClause(crossTable, ctx.where_clause());
-                else{
+                else {
                     crossTable.getData().forEach(data -> addSingleResult(data, "", true));
                 }
                 Table columnWhereFilteredTable = filterTableByColumns(whereFilteredTable, columns);
                 //End query result
-                
+
                 System.out.println("Selecting");
                 System.out.println(columnWhereFilteredTable);
             }
@@ -128,10 +128,10 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             for (int i = 0; i < fullTable.getData().size(); i++) {
                 row = fullTable.getRowAsMap(i);
                 boolean condition = (Boolean) visitWhere_clause(whereClause);
-                if (condition){
+                if (condition) {
                     addSingleResult(fullTable.getData().get(i), "", true);
                     filteredTable.insert(Util.arrayAsList(fullTable.getData().get(i)));
-                }else{
+                } else {
                     addSingleResult(fullTable.getData().get(i), "", false);
                 }
             }
@@ -168,22 +168,22 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             String tableName = ctx.table_name().getText();
             Table fullTable = tables.get(tableName);
             Table resultTable = new Table(fullTable.getDef());
-            
+
             // Start query result
             initQueryResult(Type.DELETE);
             // Add table header
             fullTable.getDef().getColumns().forEach(column -> addHeaderResult(column.getAlias()));
-            
+
             for (int i = 0; i < fullTable.getData().size(); i++) {
                 boolean condition = true;
                 loadRow(fullTable.getDef().getColumns(), fullTable.getData().get(i));
                 if (ctx.where_clause() != null)
                     condition = (Boolean) visitWhere_clause(ctx.where_clause());
-                if (!condition){
+                if (!condition) {
                     resultTable.insert(Util.arrayAsList(fullTable.getData().get(i)));
                     // Add non deleted row to query result
                     addSingleResult(fullTable.getData().get(i), "", true);
-                }else{
+                } else {
                     // Add deleted row to query result
                     addSingleResult(fullTable.getData().get(i), "", false);
                 }
@@ -211,18 +211,31 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             Table fullTable = tables.get(tableName);
             TableDefinition def = fullTable.getDef();
             visitColumn_list_assignment(ctx.column_list_assignment());
+
+            // Start query result
+            initQueryResult(Type.UPDATE);
+            // Add table header
+            def.getColumns().forEach(column -> addHeaderResult(column.getAlias()));
+
             for (int i = 0; i < fullTable.getData().size(); i++) {
                 Object[] data = fullTable.getData().get(i);
                 boolean condition = true;
                 loadRow(fullTable.getDef().getColumns(), data);
                 if (ctx.where_clause() != null)
                     condition = (Boolean) visitWhere_clause(ctx.where_clause());
-                if (condition)
+                boolean isUpdated = false;
+                if (condition) {
                     for (int j = 0; j < def.getColumns().size(); j++) {
                         String colName = def.getColumns().get(j).getName();
-                        if (columnAssig.containsKey(colName))
+                        if (columnAssig.containsKey(colName)) {
                             data[j] = columnAssig.get(colName);
+                            isUpdated = true;
+                        }
                     }
+                }
+                // Add row to query result
+                addSingleResult(data, "", isUpdated);
+
             }
             System.out.println("Updating");
             System.out.println(fullTable);
@@ -265,7 +278,7 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             Table curTable = tables.get(tableName);
             if (columns.isEmpty())
                 columns.addAll(curTable.getDef().getColumns());
-            
+
             // Start query result
             initQueryResult(Type.INSERT);
             // Add table header
@@ -275,7 +288,7 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             // Add current row
             addSingleResult(Util.listAsArray(values), "", true);
             // End query result
-            
+
             curTable.insert(columns, values);
             System.out.println("Inserting");
             System.out.println(curTable);
