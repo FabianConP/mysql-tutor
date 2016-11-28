@@ -352,6 +352,18 @@ public class MySQLParserBaseListener implements MySQLParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterShow_tables_clause(MySQLParser.Show_tables_clauseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitShow_tables_clause(MySQLParser.Show_tables_clauseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterExpression(MySQLParser.ExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}

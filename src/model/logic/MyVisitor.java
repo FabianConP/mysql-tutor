@@ -214,13 +214,19 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
 
             // Start query result
             initQueryResult(Type.UPDATE);
-            // Add table header
+            // Add table header original
+            def.getColumns().forEach(column -> addHeaderResult(column.getAlias()));
+            // Add table header modified
             def.getColumns().forEach(column -> addHeaderResult(column.getAlias()));
 
             for (int i = 0; i < fullTable.getData().size(); i++) {
-                Object[] data = fullTable.getData().get(i);
+                Object[] dataModified = fullTable.getData().get(i);
+                // Save a copy for data
+                Object[] dataOriginal = new Object[dataModified.length];
+                System.arraycopy(dataModified, 0, dataOriginal, 0, dataModified.length);
+                
                 boolean condition = true;
-                loadRow(fullTable.getDef().getColumns(), data);
+                loadRow(fullTable.getDef().getColumns(), dataModified);
                 if (ctx.where_clause() != null)
                     condition = (Boolean) visitWhere_clause(ctx.where_clause());
                 boolean isUpdated = false;
@@ -228,13 +234,13 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
                     for (int j = 0; j < def.getColumns().size(); j++) {
                         String colName = def.getColumns().get(j).getName();
                         if (columnAssig.containsKey(colName)) {
-                            data[j] = columnAssig.get(colName);
+                            dataModified[j] = columnAssig.get(colName);
                             isUpdated = true;
                         }
                     }
                 }
                 // Add row to query result
-                addSingleResult(data, "", isUpdated);
+                addSingleResult(Util.mergeArrays(dataOriginal, dataModified), "", isUpdated);
 
             }
             System.out.println("Updating");
@@ -330,14 +336,14 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             List<Constraint> constraints = new ArrayList<>();
             TableDefinition tableDef = new TableDefinition(tableName, columns, constraints);
             Table table = new Table(tableDef);
-            
+
             // Start query result
             initQueryResult(Type.CREATE);
             // Add table header
             table.getDef().getColumns().forEach(column -> addHeaderResult(column.getAlias()));
             // Add rows to query result
             table.getData().forEach(row -> addSingleResult(row, "", true));
-            
+
             tables.put(tableName, table);
 
             System.out.println("Created");
@@ -626,6 +632,17 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             table.getData().addAll(fullTable.getData());
         }
         return (T) table;
+    }
+
+    @Override
+    public T visitShow_tables_clause(MySQLParser.Show_tables_clauseContext ctx) {
+        // Start query result
+        initQueryResult(Type.SHOW_TABLES);
+        // Add table header
+        addHeaderResult("Name");
+        // Add rows to query result
+        tables.forEach((key, value)-> addSingleResult(new Object[]{key}, "", true));
+        return super.visitShow_tables_clause(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

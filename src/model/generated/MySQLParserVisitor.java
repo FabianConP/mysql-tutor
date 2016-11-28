@@ -179,6 +179,12 @@ public interface MySQLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitWhere_clause(MySQLParser.Where_clauseContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MySQLParser#show_tables_clause}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitShow_tables_clause(MySQLParser.Show_tables_clauseContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MySQLParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

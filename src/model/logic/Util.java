@@ -128,4 +128,17 @@ public class Util {
         }
         return r;
     }
+
+    public static Object[] mergeArrays(Object[]... arrays) {
+        int numCols = 0;
+        for (Object[] array : arrays) {
+            numCols += array.length;
+        }
+        Object[] merged = new Object[numCols];
+        numCols = 0;
+        for (Object[] array : arrays)
+            for (Object element : array)
+                merged[numCols++] = element;
+        return merged;
+    }
 }
