@@ -20,7 +20,7 @@ public class Interpreter {
     public static void runCommand (String command) {
         System.out.println(command);
         
-        ANTLRInputStream input = new ANTLRInputStream("select a from b");
+        ANTLRInputStream input = new ANTLRInputStream(command);
 
         MySQLLexer lexer = new MySQLLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -30,48 +30,6 @@ public class Interpreter {
         loader.visit(tree);
         
         result = new QueryResult();
-        
-        
-        //Dummy data
-        ArrayList<String> columnNames = new ArrayList<>();
-        columnNames.add("id");
-        columnNames.add("name");
-        columnNames.add("email");
-        ArrayList<Object> temp = new ArrayList<>();
-        temp.add("Milder");
-        temp.add("Hernandez");
-        temp.add("milderhc");
-        ArrayList<Object> temp1 = new ArrayList<>();
-        temp1.add("XXXXXX");
-        temp1.add("ASDASD");
-        temp1.add("ADSDFA");
-        ArrayList<Object> temp2 = new ArrayList<>();
-        temp2.add("AAAAAASD");
-        temp2.add("//////////");
-        temp2.add(",,,,,,,,");
-        
-        SingleResult row = new SingleResult(temp, "no transtalation", true);
-        SingleResult row2 = new SingleResult(temp1, "no transtalation", false);
-        SingleResult row3 = new SingleResult(temp2, "no transtalation", true);
-        ArrayList<SingleResult> data = new ArrayList<>();
-        data.add(row);
-        data.add(row2);
-        data.add(row3);
-        data.add(row);
-        data.add(row2);
-        data.add(row3);
-        data.add(row);
-        data.add(row2);
-        data.add(row3);
-        data.add(row);
-        data.add(row2);
-        data.add(row3);
-        data.add(row);
-        data.add(row2);
-        
-        result.setType(QueryResult.Type.SELECT);
-        result.setColumns(columnNames);
-        result.setResults(data);
     }
     
     public static void main(String[] args) throws IOException{
