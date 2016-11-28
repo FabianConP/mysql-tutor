@@ -168,13 +168,25 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             String tableName = ctx.table_name().getText();
             Table fullTable = tables.get(tableName);
             Table resultTable = new Table(fullTable.getDef());
+            
+            // Start query result
+            initQueryResult(Type.DELETE);
+            // Add table header
+            fullTable.getDef().getColumns().forEach(column -> addHeaderResult(column.getAlias()));
+            
             for (int i = 0; i < fullTable.getData().size(); i++) {
                 boolean condition = true;
                 loadRow(fullTable.getDef().getColumns(), fullTable.getData().get(i));
                 if (ctx.where_clause() != null)
                     condition = (Boolean) visitWhere_clause(ctx.where_clause());
-                if (!condition)
+                if (!condition){
                     resultTable.insert(Util.arrayAsList(fullTable.getData().get(i)));
+                    // Add non deleted row to query result
+                    addSingleResult(fullTable.getData().get(i), "", true);
+                }else{
+                    // Add deleted row to query result
+                    addSingleResult(fullTable.getData().get(i), "", false);
+                }
             }
             tables.put(tableName, resultTable);
             System.out.println("Removing");
@@ -253,6 +265,17 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             Table curTable = tables.get(tableName);
             if (columns.isEmpty())
                 columns.addAll(curTable.getDef().getColumns());
+            
+            // Start query result
+            initQueryResult(Type.INSERT);
+            // Add table header
+            columns.forEach(column -> addHeaderResult(column.getAlias()));
+            // Add previous rows
+            curTable.getData().forEach(row -> addSingleResult(row, "", true));
+            // Add current row
+            addSingleResult(Util.listAsArray(values), "", true);
+            // End query result
+            
             curTable.insert(columns, values);
             System.out.println("Inserting");
             System.out.println(curTable);
