@@ -5,6 +5,7 @@ import app.controller.CreateView;
 import app.controller.DeleteView;
 import app.controller.InsertView;
 import app.controller.SelectView;
+import app.controller.ShowView;
 import app.controller.UpdateView;
 import app.controller.View;
 import java.io.IOException;
@@ -287,6 +288,9 @@ public class RootLayoutController {
                 break;
             case DELETE:
                 currentView = new DeleteView(tutor, DELETE_SOURCE);
+                break;
+            case SHOW_TABLES:
+                currentView = new ShowView(tutor, SHOW_SOURCE);
                 break;
                 
             default:

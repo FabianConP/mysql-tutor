@@ -40,14 +40,16 @@ public class UpdateView extends View {
         
         data = FXCollections.observableArrayList();
         for ( SingleResult r : result.getResults() ) {
-            data.add(new Field((ArrayList<Object>) r.getData()));
+            data.add(new Field(r.getData().subList(0, r.getData().size() / 2)));
         }
 
         controller = loader.getController();
 
         controller.setTutorReference(tutor);
-        controller.getPreviousTableManagement().setup(result.getColumns(), data);
-        controller.getUpdatedTableManagement().setup(result.getColumns());
+        controller.getPreviousTableManagement().
+                setup(result.getColumns().subList(0, result.getColumns().size() / 2), data);
+        controller.getUpdatedTableManagement().
+                setup(result.getColumns().subList(result.getColumns().size() / 2, result.getColumns().size()));
     }
     
     @Override
@@ -63,14 +65,18 @@ public class UpdateView extends View {
             crossManagement.markRow(currentRowAnimation, STYLE_BLUE);
             Thread.sleep(miliSeconds);
             
+            
+            
             if ( r.isSuccessful() ) {
                 crossManagement.markRow(currentRowAnimation, STYLE_OCEAN);
-                finalManagement.addRow(new Field(r.getData()));
+                finalManagement.addRow(
+                        new Field(r.getData().subList(r.getData().size() / 2, r.getData().size())));
                 finalManagement.markRow(finalManagement.getData().size() - 1, STYLE_OCEAN);
                 Thread.sleep(miliSeconds);
             } else {
                 crossManagement.markRow(currentRowAnimation, STYLE_CHILLI);
-                finalManagement.addRow(new Field(r.getData()));
+                finalManagement.addRow(
+                        new Field(r.getData().subList(r.getData().size() / 2, r.getData().size())));
                 finalManagement.markRow(finalManagement.getData().size() - 1, STYLE_OCEAN);
                 Thread.sleep(miliSeconds);
             }

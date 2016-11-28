@@ -639,7 +639,7 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
         // Start query result
         initQueryResult(Type.SHOW_TABLES);
         // Add table header
-        addHeaderResult("Name");
+        addHeaderResult("name");
         // Add rows to query result
         tables.forEach((key, value)-> addSingleResult(new Object[]{key}, "", true));
         return super.visitShow_tables_clause(ctx); //To change body of generated methods, choose Tools | Templates.
