@@ -330,6 +330,14 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             List<Constraint> constraints = new ArrayList<>();
             TableDefinition tableDef = new TableDefinition(tableName, columns, constraints);
             Table table = new Table(tableDef);
+            
+            // Start query result
+            initQueryResult(Type.CREATE);
+            // Add table header
+            table.getDef().getColumns().forEach(column -> addHeaderResult(column.getAlias()));
+            // Add rows to query result
+            table.getData().forEach(row -> addSingleResult(row, "", true));
+            
             tables.put(tableName, table);
 
             System.out.println("Created");
