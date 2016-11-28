@@ -9,7 +9,7 @@ commands
     ;
 
 stat
-   : create_clause | drop_table_clause | select_clause | insert_clause | update_clause | delete_clause
+   : create_clause | drop_table_clause | select_clause | insert_clause | update_clause | delete_clause | show_tables_clause
    ;
 
 create_clause
@@ -115,6 +115,10 @@ select_key
 where_clause
    : WHERE expression
    ;
+
+show_tables_clause
+    : SHOW TABLES
+    ;
 
 expression
     : expr

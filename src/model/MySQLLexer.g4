@@ -421,9 +421,13 @@ RIGHT
    ;
 
 
-//OJ
-//   : 'oj'
-//   ;
+SHOW
+    : 'show'
+    ;
+
+TABLES
+    : 'tables'
+    ;
 
 
 ON

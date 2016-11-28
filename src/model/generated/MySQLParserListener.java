@@ -288,6 +288,16 @@ public interface MySQLParserListener extends ParseTreeListener {
 	 */
 	void exitWhere_clause(MySQLParser.Where_clauseContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MySQLParser#show_tables_clause}.
+	 * @param ctx the parse tree
+	 */
+	void enterShow_tables_clause(MySQLParser.Show_tables_clauseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MySQLParser#show_tables_clause}.
+	 * @param ctx the parse tree
+	 */
+	void exitShow_tables_clause(MySQLParser.Show_tables_clauseContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MySQLParser#expression}.
 	 * @param ctx the parse tree
 	 */

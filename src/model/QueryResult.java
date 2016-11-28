@@ -6,7 +6,7 @@ import java.util.List;
 public class QueryResult {
     
     public enum Type {
-        SELECT, UPDATE, CREATE, INSERT, DELETE
+        SELECT, UPDATE, CREATE, INSERT, DELETE, SHOW_TABLES
     };
     
     private Type type;    

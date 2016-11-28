@@ -330,14 +330,14 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             List<Constraint> constraints = new ArrayList<>();
             TableDefinition tableDef = new TableDefinition(tableName, columns, constraints);
             Table table = new Table(tableDef);
-            
+
             // Start query result
             initQueryResult(Type.CREATE);
             // Add table header
             table.getDef().getColumns().forEach(column -> addHeaderResult(column.getAlias()));
             // Add rows to query result
             table.getData().forEach(row -> addSingleResult(row, "", true));
-            
+
             tables.put(tableName, table);
 
             System.out.println("Created");
@@ -626,6 +626,17 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             table.getData().addAll(fullTable.getData());
         }
         return (T) table;
+    }
+
+    @Override
+    public T visitShow_tables_clause(MySQLParser.Show_tables_clauseContext ctx) {
+        // Start query result
+        initQueryResult(Type.SHOW_TABLES);
+        // Add table header
+        addHeaderResult("Name");
+        // Add rows to query result
+        tables.forEach((key, value)-> addSingleResult(new Object[]{key}, "", true));
+        return super.visitShow_tables_clause(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
