@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Table {
 
@@ -51,33 +53,44 @@ public class Table {
     }
 
     public void insert(List<Column> columns, List<Object> values) throws Exception {
+        try {
 //        if (Util.checkColumns(def.getColumns(), columns))
 //            ExceptionHandler.columnFieldException(def.getColumns(), columns);
-        List<Column> colsDef = def.getColumns();
-        Object[] row = new Object[colsDef.size()];
-        int processed = 0;
-        for (int i = 0; i < colsDef.size(); i++) {
-            Column colDef = colsDef.get(i);
-            if (colDef.isAutoIncrement()) {
-                row[i] = getNextAIValue(i);
-            } else if (colDef.getAlias().equals(columns.get(processed).getAlias())) {
-                // Check if match the data
-                if (Util.matchData(colDef.getType().getDataType(), values.get(processed))) {
-                    row[i] = values.get(i);
-                    processed++;
+            List<Column> colsDef = def.getColumns();
+            Object[] row = new Object[colsDef.size()];
+            int processed = 0;
+            for (int i = 0; i < colsDef.size(); i++) {
+                Column colDef = colsDef.get(i);
+                if (colDef.isAutoIncrement()) {
+                    row[i] = getNextAIValue(i);
+                } else if (colDef.getAlias().equals(columns.get(processed).getAlias())) {
+                    // Check if match the data
+                    if (Util.matchData(colDef.getType().getDataType(), values.get(processed))) {
+                        row[i] = values.get(i);
+                        processed++;
+                    } else {
+                        ExceptionHandler.generalException("Mistmatch exception ",
+                                "expecting",
+                                colDef.getType().getDataType().toString(),
+                                "received",
+                                values.get(processed).toString());// Throw mismatch exception
+                    }
+                } else if (colDef.isNullable()) {
+                    // OK, pass
                 } else {
-                    // Throw mismatch exception
+                    ExceptionHandler.generalException("Error in column", colDef.getName());
+                    // Throw exception on column colDef.getName()
                 }
-            } else if (colDef.isNullable()) {
-                // OK, pass
-            } else {
+            }
+            if (processed == columns.size())
+                data.add(row);
+            else {
+                ExceptionHandler.generalException("There are more columns, expecting",
+                        columns.size() + "", "received", processed + "");
                 // Throw exception on column colDef.getName()
             }
-        }
-        if (processed == columns.size())
-            data.add(row);
-        else {
-            // Throw exception on column colDef.getName()
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
     }
 
@@ -96,59 +109,81 @@ public class Table {
                 row[i] = values.get(i);
                 processed++;
             } else if (!colDef.isNullable()) {
-                // Throw mismatch exception
+                ExceptionHandler.generalException("Mistmatch exception ",
+                        "expecting",
+                        colDef.getType().getDataType().toString(),
+                        "received",
+                        values.get(processed).toString());// Throw mismatch exception
             } else {
+                ExceptionHandler.generalException("Error in column", colDef.getName());
                 // Throw exception on column colDef.getName()
             }
         }
         if (processed == values.size())
             data.add(row);
         else {
+            ExceptionHandler.generalException("There are more columns, expecting",
+                    values.size() + "", "received", processed + "");
             // Throw exception on column colDef.getName()
         }
     }
 
     public Map<String, Object> getRowAsMap(int index) {
-        if (index < 0 || index >= data.size())
-            ; // Throw new index out of bounds exception
+        try {
+            if (index < 0 || index >= data.size())
+                ExceptionHandler.generalException("Index must be non negative, " + index); // Throw new index out of bounds exception
 
-        Map<String, Object> map = new HashMap<>();
-        Object[] row = data.get(index);
+            Map<String, Object> map = new HashMap<>();
+            Object[] row = data.get(index);
 
-        for (int i = 0; i < def.getColumns().size(); i++)
-            map.put(def.getColumns().get(i).getName(), row[i]);
+            for (int i = 0; i < def.getColumns().size(); i++)
+                map.put(def.getColumns().get(i).getName(), row[i]);
 
-        return map;
+            return map;
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }
+        return null;
     }
 
     public static Table crossTables(Table... tables) {
-        int numCols = 0;
-        TableDefinition tableDef = new TableDefinition();
-        Set<String> tableNames = new HashSet<>();
-        StringBuilder crossTableName = new StringBuilder();
-        for (Table table : tables) {
-            int idCurTable = 0;
-            while (tableNames.contains(table.getDef().getName() + idCurTable))
-                idCurTable++;
-            String tableName = table.getDef().getName() + idCurTable;
-            if(crossTableName.length() > 0)
-                crossTableName.append('.');
-            crossTableName.append(tableName);
-            tableNames.add(tableName);
-            numCols += table.getDef().getColumns().size();
-            for (Column column : table.getDef().getColumns()) {
-                Column newCol = (Column) column.clone();
-                newCol.setName(tableName + "." + newCol.getName());
-                newCol.setAlias(tableName + "." + newCol.getName());
-                tableDef.getColumns().add(column);
+        try {
+
+            int numCols = 0;
+            TableDefinition tableDef = new TableDefinition();
+            Set<String> tableNames = new HashSet<>();
+            for (Table table : tables) {
+                if (tableNames.contains(table.getDef().getAlias()))
+                    ExceptionHandler.generalException("Not unique table alias for", table.getDef().getAlias()); // Throw new exception, Not unique table alias
+                tableNames.add(table.getDef().getAlias());
             }
+            StringBuilder crossTableName = new StringBuilder();
+            for (Table table : tables) {
+                String tableId = table.getDef().getAlias();
+                if (crossTableName.length() > 0)
+                    crossTableName.append('.');
+                crossTableName.append(tableId);
+                numCols += table.getDef().getColumns().size();
+                for (Column column : table.getDef().getColumns()) {
+                    Column newCol = (Column) column.clone();
+                    String newColId = newCol.getName();
+                    if (tables.length > 1)
+                        newColId = tableId + "." + newColId;
+                    newCol.setName(newColId);
+                    newCol.setAlias(newColId);
+                    tableDef.getColumns().add(newCol);
+                }
+            }
+            Object[] data = new Object[numCols];
+            tableDef.setName(crossTableName.toString());
+            tableDef.setAlias(crossTableName.toString());
+            Table table = new Table(tableDef);
+            generateCrossTables(table, tables, 0, 0, data);
+            return table;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
-        Object[] data = new Object[numCols];
-        tableDef.setName(crossTableName.toString());
-        tableDef.setAlias(crossTableName.toString());
-        Table table = new Table(tableDef);
-        generateCrossTables(table, tables, 0, 0, data);
-        return table;
+        return null;
     }
 
     private static void generateCrossTables(Table table, Table[] tables, int indexTable, int numCols, Object[] data) {

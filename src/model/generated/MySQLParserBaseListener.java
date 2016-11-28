@@ -292,18 +292,6 @@ public class MySQLParserBaseListener implements MySQLParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIndex_name(MySQLParser.Index_nameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIndex_name(MySQLParser.Index_nameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterColumn_list(MySQLParser.Column_listContext ctx) { }
 	/**
 	 * {@inheritDoc}

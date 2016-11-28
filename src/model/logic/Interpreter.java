@@ -84,6 +84,8 @@ public class Interpreter {
         ParseTree tree = parser.commands();
         MyVisitor<Object> loader = new MyVisitor<>();
         loader.visit(tree);
+        
+        System.out.println(result);
     }
     
 }

@@ -241,9 +241,9 @@ ESCAPE
    ;
 
 
-ASTERISK
-   : '*'
-   ;
+//ASTERISK
+//   : '*'
+//   ;
 
 
 RPAREN
@@ -432,9 +432,12 @@ ON
 
 
 ID
-   : ( 'a' .. 'z' | 'A' .. 'Z' | '_' )+
+   : ( LETTER | '_' )+(DOT? (LETTER | INT | '_'))*
    ;
 
+LETTER
+    : 'a' .. 'z' | 'A' .. 'Z'
+    ;
 
 INT
    : '0' .. '9'+
@@ -453,6 +456,8 @@ NEWLINE
    : '\r'? '\n' -> skip
    ;
 
+//LINE_COMMENT
+//   : '//' ~[\r\n]* -> skip ;
 
 WS
    : ( ' ' | '\t' | '\n' | '\r' )+ -> skip

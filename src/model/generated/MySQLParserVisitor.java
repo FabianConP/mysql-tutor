@@ -149,12 +149,6 @@ public interface MySQLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitColumn_name_alias(MySQLParser.Column_name_aliasContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MySQLParser#index_name}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIndex_name(MySQLParser.Index_nameContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MySQLParser#column_list}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

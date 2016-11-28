@@ -238,16 +238,6 @@ public interface MySQLParserListener extends ParseTreeListener {
 	 */
 	void exitColumn_name_alias(MySQLParser.Column_name_aliasContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MySQLParser#index_name}.
-	 * @param ctx the parse tree
-	 */
-	void enterIndex_name(MySQLParser.Index_nameContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MySQLParser#index_name}.
-	 * @param ctx the parse tree
-	 */
-	void exitIndex_name(MySQLParser.Index_nameContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MySQLParser#column_list}.
 	 * @param ctx the parse tree
 	 */

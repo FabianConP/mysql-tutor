@@ -3,11 +3,4 @@ insert into usuario values (12, 23)
 insert into usuario values (34, 33)
 insert into usuario values (21, 28)
 insert into usuario values (56, 54)
-select id, edad from usuario
-select id, edad from usuario where (id = 12 || id = 21) and edad >= 25
-delete from usuario where edad = 33
-select id, edad from usuario
-insert into usuario values (34, 33)
-select id, edad from usuario
-update usuario set (id = 18) where id = 12
-select id, edad from usuario
+select * from usuario as u1, usuario as u2 where u1.id = 12
