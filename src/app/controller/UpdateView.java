@@ -65,8 +65,6 @@ public class UpdateView extends View {
             crossManagement.markRow(currentRowAnimation, STYLE_BLUE);
             Thread.sleep(miliSeconds);
             
-            
-            
             if ( r.isSuccessful() ) {
                 crossManagement.markRow(currentRowAnimation, STYLE_OCEAN);
                 finalManagement.addRow(

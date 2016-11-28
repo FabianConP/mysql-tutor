@@ -48,6 +48,8 @@ public class RootLayoutController {
             
     @FXML
     private BorderPane codePane;
+    @FXML
+    private BorderPane currentCommandPane;
     
     @FXML
     private Slider speedSlider;
@@ -61,7 +63,7 @@ public class RootLayoutController {
     @FXML
     private Button reloadButton;
     
-    private CodeArea codeArea;
+    private CodeArea codeArea, currentCommandArea;
     
     private final String SELECT_SOURCE;
     private final String UPDATE_SOURCE;
@@ -133,46 +135,13 @@ public class RootLayoutController {
         "insert into usuario values (56, 54);",
         "select * from usuario as u1, usuario as u2 where u1.id = 12;"
     });
-
-    
-    private class ArrowFactory implements IntFunction<Node> {
-        private final ObservableValue<Integer> shownLine;
-
-        ArrowFactory(ObservableValue<Integer> shownLine) {
-            this.shownLine = shownLine;
-        }
-
-        @Override
-        public Node apply(int lineNumber) {
-            Polygon triangle = new Polygon(0.0, 0.0, 10.0, 5.0, 0.0, 10.0);
-            triangle.setFill(Color.ROYALBLUE);
-
-            ObservableValue<Boolean> visible = Val.map(shownLine, sl -> sl == lineNumber);
-
-            triangle.visibleProperty().bind(
-                Val.flatMap(triangle.sceneProperty(), scene -> {
-                    return scene != null ? visible : Val.constant(false);
-            }));
-
-            return triangle;
-        }
-    }
-
     
     @FXML
     private void initialize() {
+        /*
+        * Code area configuration
+        */
         codeArea = new CodeArea();
-        
-        IntFunction<Node> numberFactory = LineNumberFactory.get(codeArea);
-        IntFunction<Node> arrowFactory = new ArrowFactory(codeArea.currentParagraphProperty());
-        IntFunction<Node> graphicFactory = line -> {
-            HBox hbox = new HBox(
-                    numberFactory.apply(line),
-                    arrowFactory.apply(line));
-            hbox.setAlignment(Pos.CENTER_LEFT);
-            return hbox;
-        };
-        
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
 
         codeArea.richChanges()
@@ -180,7 +149,6 @@ public class RootLayoutController {
                 .subscribe(change -> {
                     codeArea.setStyleSpans(0, computeHighlighting(codeArea.getText()));
                 });
-        
         codeArea.replaceText(0, 0, sampleCode);
         codeArea.moveTo(0, 0);
         codeArea.setOnKeyPressed(event -> {
@@ -193,14 +161,30 @@ public class RootLayoutController {
                 }
             }
         );
+        codePane.setCenter(codeArea);    
         
-        codePane.setCenter(codeArea);        
+        /*
+        * Current command area configuration
+        */
+        currentCommandArea = new CodeArea();
+        currentCommandArea.setParagraphGraphicFactory(LineNumberFactory.get(currentCommandArea));
+
+        currentCommandArea.richChanges()
+                .filter(ch -> !ch.getInserted().equals(ch.getRemoved())) 
+                .subscribe(change -> {
+                    currentCommandArea.setStyleSpans(0, computeHighlighting(currentCommandArea.getText()));
+                });
+        currentCommandArea.setEditable(false);
+        currentCommandArea.getStylesheets().
+                add(RootLayoutController.class.getResource("css/mysql-keywords_1.css").toExternalForm());
+        currentCommandPane.setCenter(currentCommandArea);
+        
+        
         
         speedSlider.setValue(DEFAULT_SLIDER_VALUE);
         animationThread = new AnimationThread();
         
         runCommandButton.setDisable(false);
-        
         pauseResumeButton.setDisable(true);
         pauseResumeButton.setGraphic(playImage);
         stopButton.setDisable(true);
@@ -270,6 +254,8 @@ public class RootLayoutController {
         String queryString = getLineCommand();
         moveCaretToNextParagraph();
         
+        currentCommandArea.clear();
+        currentCommandArea.replaceText(0, 0, queryString);
         Interpreter.runCommand(queryString);
         
         QueryResult result = Interpreter.result;

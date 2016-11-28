@@ -23,7 +23,7 @@
 }
 
 .label-bright {
-    -fx-font-size: 11pt;
+    -fx-font-size: 12pt;
     -fx-font-family: "Lato Light";
     -fx-text-fill: -fx-general-text-color;
     -fx-opacity: 1;
@@ -64,7 +64,7 @@
 }
 
 .table-view .column-header .label {
-    -fx-font-size: 22pt;
+    -fx-font-size: 18pt;
     -fx-font-family: "Lato Light";
     -fx-text-fill: -fx-general-text-color;
     -fx-alignment: center-left;
@@ -93,7 +93,7 @@
 }
 
 .menu-bar .label {
-    -fx-font-size: 12pt;
+    -fx-font-size: 11pt;
     -fx-font-family: "Lato Light";
     -fx-text-fill: -fx-general-text-color;
     -fx-opacity: 0.9;
