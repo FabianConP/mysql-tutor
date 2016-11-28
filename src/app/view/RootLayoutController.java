@@ -245,18 +245,10 @@ public class RootLayoutController {
             codeArea.moveTo(codeArea.getCurrentParagraph() - 1, 0);
     }
     
-    @FXML
-    private void runCommand () throws IOException {
+    private void chooseView () throws IOException { 
         reloadButton.setDisable(false);
         pauseResumeButton.setGraphic(pauseImage);
         enableDisableButtons();
-        
-        String queryString = getLineCommand();
-        moveCaretToNextParagraph();
-        
-        currentCommandArea.clear();
-        currentCommandArea.replaceText(0, 0, queryString);
-        Interpreter.runCommand(queryString);
         
         QueryResult result = Interpreter.result;
         switch (result.getType()) {
@@ -286,6 +278,19 @@ public class RootLayoutController {
         currentView.setUp(result);
         animationThread = new AnimationThread();
         animationThread.start();
+    }
+    
+    @FXML
+    private void runCommand () throws IOException {       
+        String queryString = getLineCommand();
+        moveCaretToNextParagraph();
+        
+        currentCommandArea.clear();
+        currentCommandArea.replaceText(0, 0, queryString);
+        
+        Interpreter.runCommand(queryString);
+        
+        chooseView();
     }
 
     public void setMySQLReference(MySQLTutor tutor) {
@@ -333,10 +338,9 @@ public class RootLayoutController {
     
     @FXML
     private void reloadAnimation () throws InterruptedException, IOException { 
-        if (!runCommandButton.isDisabled())
-            enableDisableButtons();
-        stopAnimation();
-        moveCaretToPreviousParagraph();
-        runCommand();
+        if ( animationThread.isAlive() ) {
+            stopAnimation();
+        }
+        chooseView();
     }
 }
