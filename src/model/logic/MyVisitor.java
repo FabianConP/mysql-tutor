@@ -96,7 +96,7 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             }
             return super.visitSelect_clause(ctx);
         } catch (Exception ex) {
-            System.err.print(ex.getMessage());
+            System.err.print(ex.getMessage()); Interpreter.result.setError(ex.getMessage());
         }
         return null;
     }
@@ -160,7 +160,7 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             }
             return filteredTable;
         } catch (Exception ex) {
-            System.err.print(ex.getMessage());
+            System.err.print(ex.getMessage()); Interpreter.result.setError(ex.getMessage());
         }
         return null;
     }
@@ -173,7 +173,7 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
                 ExceptionHandler.generalException(ctx, "Invalid expression for where clause"); // Throw new exception, invalidad where clause
             return (T) r;
         } catch (Exception ex) {
-            System.err.print(ex.getMessage());
+            System.err.print(ex.getMessage()); Interpreter.result.setError(ex.getMessage());
         }
         return null;
     }
@@ -216,7 +216,7 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             System.out.println(resultTable);
             return super.visitDelete_clause(ctx);
         } catch (Exception ex) {
-            System.err.print(ex.getMessage());
+            System.err.print(ex.getMessage()); Interpreter.result.setError(ex.getMessage());
         }
         return null;
     }
@@ -270,7 +270,7 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             System.out.println(fullTable);
             return super.visitUpdate_clause(ctx);
         } catch (Exception ex) {
-            System.err.print(ex.getMessage());
+            System.err.print(ex.getMessage()); Interpreter.result.setError(ex.getMessage());
             // Throw new exception, updating element i
         }
         return null;
@@ -323,7 +323,7 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             System.out.println(curTable);
             return super.visitInsert_clause(ctx);
         } catch (Exception ex) {
-            System.err.print(ex.getMessage());
+            System.err.print(ex.getMessage()); Interpreter.result.setError(ex.getMessage());
         }
         return null;
     }
@@ -339,7 +339,7 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             tables.remove(tableName);
             return super.visitDrop_table_clause(ctx);
         } catch (Exception ex) {
-            System.err.print(ex.getMessage());
+            System.err.print(ex.getMessage()); Interpreter.result.setError(ex.getMessage());
 
         }
         return null;
@@ -373,7 +373,7 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             System.out.println(table);
             return super.visitCreate_clause(ctx);
         } catch (Exception ex) {
-            System.err.print(ex.getMessage());
+            System.err.print(ex.getMessage()); Interpreter.result.setError(ex.getMessage());
         }
         return null;
     }
@@ -550,7 +550,7 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             }
             return (T) r;
         } catch (Exception ex) {
-            System.err.println(ex.getMessage() + "\n");
+            System.err.println(ex.getMessage());
         }
         return null;
     }
@@ -574,7 +574,7 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
                 ExceptionHandler.generalException(ctx, "Invalidad operator + " + ctx.getText()); // Throw new exception unknown value ctx...
             return (T) r;
         } catch (Exception ex) {
-            System.err.print(ex.getMessage());
+            System.err.print(ex.getMessage()); Interpreter.result.setError(ex.getMessage());
         }
         return null;
     }

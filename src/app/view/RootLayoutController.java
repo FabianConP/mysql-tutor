@@ -11,36 +11,24 @@ import app.controller.View;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.function.IntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javafx.animation.FadeTransition;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polygon;
-import javafx.stage.Popup;
-import javafx.util.Duration;
 import model.QueryResult;
 import model.logic.Interpreter;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
-import org.reactfx.value.Val;
 
 /**
  *
@@ -107,10 +95,11 @@ public class RootLayoutController {
     private static final String[] KEYWORDS = new String[] {
             "select", "from", "as", "where", "like", "and", "or", "xor", "avg", "join", "sum",
             "insert", "into", "values", 
-            "update",
+            "update", "set",
             "create", "table",
             "delete", "max", "min",
-            "show"
+            "show",
+            "drop"
     };
 
     private static final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
@@ -130,15 +119,6 @@ public class RootLayoutController {
             + "|(?<STRING>" + STRING_PATTERN + ")"
             + "|(?<COMMENT>" + COMMENT_PATTERN + ")"
     );
-
-    private static final String sampleCode = String.join("\n", new String[] {
-        "create table usuario (id int, edad int);",
-        "insert into usuario values (12, 23);",
-        "insert into usuario values (34, 33);",
-        "insert into usuario values (21, 28);",
-        "insert into usuario values (56, 54);",
-        "select * from usuario as u1, usuario as u2 where u1.id = 12;"
-    });
     
     @FXML
     private void initialize() {
@@ -153,10 +133,10 @@ public class RootLayoutController {
                 .subscribe(change -> {
                     codeArea.setStyleSpans(0, computeHighlighting(codeArea.getText()));
                 });
-        codeArea.replaceText(0, 0, sampleCode);
         codeArea.moveTo(0, 0);
         codeArea.setOnKeyPressed(event -> {
-                if (event.isControlDown() && event.getCode() == KeyCode.ENTER) {
+                if (!runCommandButton.isDisabled() && 
+                    event.isControlDown() && event.getCode() == KeyCode.ENTER) {
                     try {
                         runCommand();
                     } catch (IOException ex) {
@@ -293,6 +273,17 @@ public class RootLayoutController {
         currentCommandArea.replaceText(0, 0, queryString);
         
         Interpreter.runCommand(queryString);
+        if ( !Interpreter.result.getError().equals("") ) {
+            Alert dialog = new Alert(Alert.AlertType.ERROR);
+            dialog.setHeaderText("Error on MySQL Tutor");
+            dialog.setContentText(Interpreter.result.getError());
+
+            dialog.setResizable(true);
+            dialog.getDialogPane().setPrefSize(480, 200);
+
+            dialog.showAndWait();
+            return;
+        }
         
         chooseView();
     }

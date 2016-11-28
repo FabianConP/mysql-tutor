@@ -31,6 +31,6 @@ public class ExceptionHandler {
         StringBuilder r = new StringBuilder();
         for(String m : message)
             r.append(m).append(' ');
-        throw new Exception("Error in [" + row + "," + col + "]. " + r.toString());
+        throw new Exception(r.toString());
     }
 }

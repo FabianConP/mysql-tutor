@@ -90,7 +90,7 @@ public class Table {
                 // Throw exception on column colDef.getName()
             }
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            System.err.println(e.getMessage()); Interpreter.result.setError(e.getMessage());
         }
     }
 
@@ -181,7 +181,7 @@ public class Table {
             generateCrossTables(table, tables, 0, 0, data);
             return table;
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            System.err.println(e.getMessage()); Interpreter.result.setError(e.getMessage());
         }
         return null;
     }

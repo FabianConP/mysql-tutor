@@ -14,17 +14,28 @@ public class QueryResult {
     private List<String> columns;
     private List<SingleResult> results;
     
+    private String error;
+    
     public QueryResult() {
     }    
     
     public QueryResult(Type type) {
         this(type, new LinkedList<String>(), new LinkedList<SingleResult>());
+        error = "";
     }
     
     public QueryResult(Type type, List<String> columns, List<SingleResult> results) {
         this.type = type;
         this.columns = columns;
         this.results = results;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
     
     public Type getType() {

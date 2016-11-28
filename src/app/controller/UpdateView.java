@@ -70,13 +70,13 @@ public class UpdateView extends View {
                 finalManagement.addRow(
                         new Field(r.getData().subList(r.getData().size() / 2, r.getData().size())));
                 finalManagement.markRow(finalManagement.getData().size() - 1, STYLE_OCEAN);
-                Thread.sleep(miliSeconds);
+                Thread.sleep(miliSeconds / 2);
             } else {
                 crossManagement.markRow(currentRowAnimation, STYLE_CHILLI);
                 finalManagement.addRow(
                         new Field(r.getData().subList(r.getData().size() / 2, r.getData().size())));
-                finalManagement.markRow(finalManagement.getData().size() - 1, STYLE_OCEAN);
-                Thread.sleep(miliSeconds);
+                finalManagement.markRow(finalManagement.getData().size() - 1, STYLE_CORAL);
+                Thread.sleep(miliSeconds / 2);
             }
         }  
        
