@@ -88,6 +88,7 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
                     crossTable.getData().forEach(data -> addSingleResult(data, "", true));
                 }
                 Table columnWhereFilteredTable = filterTableByColumns(whereFilteredTable, columns);
+                filterQueryResultByColumns();
                 //End query result
 
                 System.out.println("Selecting");
@@ -100,6 +101,18 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
         return null;
     }
 
+    private void filterQueryResultByColumns() {
+        QueryResult queryResult = Interpreter.result;
+        queryResult.getResults().forEach((single) -> {
+            int index = 0;
+            while (index < single.getData().size())
+                if (single.getData().get(index) == null)
+                    single.getData().remove(index);
+                else
+                    index++;
+        });
+    }
+
     private Table filterTableByColumns(Table fullTable, Set<Column> columns) {
         Table filteredTable = new Table();
         TableDefinition def = fullTable.getDef();
@@ -108,15 +121,25 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
             if (columns.contains(column))
                 filteredTable.getDef().getColumns().add((Column) column.clone());
         }
-        for (Object[] row : fullTable.getData()) {
+        boolean[] rowsToDelete = new boolean[def.getColumns().size()];
+        for (int i = 0; i < fullTable.getData().size(); i++) {
+            Object[] row = fullTable.getData().get(i).clone();
             List<Object> filteredRow = new LinkedList<>();
-            for (int i = 0; i < def.getColumns().size(); i++) {
-                Column column = def.getColumns().get(i);
+            for (int j = 0; j < def.getColumns().size(); j++) {
+                Column column = def.getColumns().get(j);
                 if (columns.contains(column))
-                    filteredRow.add(row[i]);
+                    filteredRow.add(row[j]);
+                else
+                    rowsToDelete[j] = true;
             }
             filteredTable.getData().add(filteredRow.toArray(new Object[filteredRow.size()]));
         }
+
+        // Filter columns in query result
+        for (SingleResult single : Interpreter.result.getResults())
+            for (int i = 0; i < rowsToDelete.length; i++)
+                if (rowsToDelete[i])
+                    single.getData().set(i, null);
         return filteredTable;
     }
 
@@ -224,7 +247,7 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
                 // Save a copy for data
                 Object[] dataOriginal = new Object[dataModified.length];
                 System.arraycopy(dataModified, 0, dataOriginal, 0, dataModified.length);
-                
+
                 boolean condition = true;
                 loadRow(fullTable.getDef().getColumns(), dataModified);
                 if (ctx.where_clause() != null)
@@ -641,7 +664,7 @@ public class MyVisitor<T> extends MySQLParserBaseVisitor<T> {
         // Add table header
         addHeaderResult("Name");
         // Add rows to query result
-        tables.forEach((key, value)-> addSingleResult(new Object[]{key}, "", true));
+        tables.forEach((key, value) -> addSingleResult(new Object[]{key}, "", true));
         return super.visitShow_tables_clause(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 

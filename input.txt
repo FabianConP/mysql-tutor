@@ -3,4 +3,4 @@ insert into usuario values (12, 23)
 insert into usuario values (34, 33)
 insert into usuario values (21, 28)
 insert into usuario values (56, 54)
-select * from usuario as u1, usuario as u2 where u1.id = 12
+select u1.id, u2.edad from usuario as u1, usuario as u2 where u1.id = 12
