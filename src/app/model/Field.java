@@ -18,7 +18,7 @@ public class Field {
     public Field(List<Object> data) {
         this.data = new ArrayList<>();
         for (Object o : data) {
-            this.data.add(new SimpleStringProperty((String) o));
+            this.data.add(new SimpleStringProperty(o.toString()));
         }
         currentProperty = 0;
     }

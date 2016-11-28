@@ -10,7 +10,7 @@ import javafx.scene.control.TableView;
  *
  * @author milder
  */
-public class UpdateController {
+public class DeleteController {
     @FXML
     private TableView<Field> previousTable;
     private TableManagement previousTableManagement;
@@ -21,7 +21,7 @@ public class UpdateController {
     
     private MySQLTutor tutorReference;
 
-    public UpdateController() {
+    public DeleteController() {
     }
     
     
@@ -29,7 +29,7 @@ public class UpdateController {
         return previousTableManagement;
     }
     
-    public TableManagement getUpdatedTableManagement () {
+    public TableManagement getDeletedTableManagement () {
         return updatedTableManagement;
     }
 
@@ -47,11 +47,11 @@ public class UpdateController {
         this.previousTable = previousTable;
     }
 
-    public TableView<Field> getUpdatedTable() {
+    public TableView<Field> getDeletedTable() {
         return updatedTable;
     }
 
-    public void setUpdatedTable(TableView<Field> updatedTable) {
+    public void setDeletedTable(TableView<Field> updatedTable) {
         this.updatedTable = updatedTable;
     }
 

@@ -2,6 +2,7 @@ package app.view;
 
 import app.MySQLTutor;
 import app.controller.CreateView;
+import app.controller.DeleteView;
 import app.controller.InsertView;
 import app.controller.SelectView;
 import app.controller.UpdateView;
@@ -65,7 +66,8 @@ public class RootLayoutController {
     private final String UPDATE_SOURCE;
     private final String CREATE_SOURCE;
     private final String INSERT_SOURCE;
-    
+    private final String DELETE_SOURCE;
+    private final String SHOW_SOURCE;
     
     private View currentView;
     
@@ -80,6 +82,9 @@ public class RootLayoutController {
         UPDATE_SOURCE = "view/Update.fxml";
         CREATE_SOURCE = "view/Create.fxml";
         INSERT_SOURCE = "view/Insert.fxml";
+        DELETE_SOURCE = "view/Delete.fxml";
+        SHOW_SOURCE = "view/Show.fxml";
+        
         DEFAULT_SLIDER_VALUE = 80;
         
         playImage = new ImageView(new Image(
@@ -93,9 +98,12 @@ public class RootLayoutController {
     }
     
     private static final String[] KEYWORDS = new String[] {
-            "select", "from", "where", "like", "insert", "into", "update",
+            "select", "from", "as", "where", "like", "and", "or", "xor", "avg", "join", "sum",
+            "insert", "into", "values", 
+            "update",
             "create", "table",
-            "values"
+            "delete", "max", "min",
+            "show"
     };
 
     private static final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
@@ -117,12 +125,14 @@ public class RootLayoutController {
     );
 
     private static final String sampleCode = String.join("\n", new String[] {
-        "select a, b from xd;",
-        "select * from tabla where a = 2 and x = 1;",
-        "select * from tabla where a = 2 and x = 1;",
-        "insert into tabla values(value1, value2);"
+        "create table usuario (id int, edad int);",
+        "insert into usuario values (12, 23);",
+        "insert into usuario values (34, 33);",
+        "insert into usuario values (21, 28);",
+        "insert into usuario values (56, 54);",
+        "select * from usuario as u1, usuario as u2 where u1.id = 12;"
     });
-    
+
     
     private class ArrowFactory implements IntFunction<Node> {
         private final ObservableValue<Integer> shownLine;
@@ -274,6 +284,9 @@ public class RootLayoutController {
                 break;
             case INSERT:
                 currentView = new InsertView(tutor, INSERT_SOURCE);
+                break;
+            case DELETE:
+                currentView = new DeleteView(tutor, DELETE_SOURCE);
                 break;
                 
             default:

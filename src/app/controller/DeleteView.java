@@ -1,10 +1,13 @@
 package app.controller;
 
 import app.MySQLTutor;
+import static app.controller.View.STYLE_BLUE;
+import static app.controller.View.STYLE_CHILLI;
+import static app.controller.View.STYLE_OCEAN;
 import app.model.Field;
 import app.model.TableManagement;
 import app.view.RootLayoutController;
-import app.view.UpdateController;
+import app.view.DeleteController;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +26,13 @@ import model.SingleResult;
  *
  * @author milder
  */
-public class UpdateView extends View {
+public class DeleteView extends View {
     
     private ObservableList<Field> data;
     private QueryResult result;
-    private UpdateController controller;
+    private DeleteController controller;
 
-    public UpdateView(MySQLTutor tutor, String source) throws IOException {
+    public DeleteView(MySQLTutor tutor, String source) throws IOException {
         super(tutor, source);
         startingRowAnimation = 0;
     }
@@ -47,13 +50,13 @@ public class UpdateView extends View {
 
         controller.setTutorReference(tutor);
         controller.getPreviousTableManagement().setup(result.getColumns(), data);
-        controller.getUpdatedTableManagement().setup(result.getColumns());
+        controller.getDeletedTableManagement().setup(result.getColumns());
     }
     
     @Override
     public void animate(int miliSeconds) throws InterruptedException {
         TableManagement crossManagement = controller.getPreviousTableManagement();
-        TableManagement finalManagement = controller.getUpdatedTableManagement();
+        TableManagement finalManagement = controller.getDeletedTableManagement();
         List<SingleResult> results = result.getResults();
         
         for (currentRowAnimation = startingRowAnimation; 
@@ -70,8 +73,6 @@ public class UpdateView extends View {
                 Thread.sleep(miliSeconds);
             } else {
                 crossManagement.markRow(currentRowAnimation, STYLE_CHILLI);
-                finalManagement.addRow(new Field(r.getData()));
-                finalManagement.markRow(finalManagement.getData().size() - 1, STYLE_OCEAN);
                 Thread.sleep(miliSeconds);
             }
         }  
@@ -90,10 +91,7 @@ public class UpdateView extends View {
         animate(miliSeconds);
     }
 
-    public UpdateController getController() {
+    public DeleteController getController() {
         return controller;
-    }
-    
-    
-    
+    }       
 }

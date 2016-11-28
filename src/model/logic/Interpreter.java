@@ -14,8 +14,8 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 public class Interpreter {
     
-    
     public static QueryResult result;
+    public static MyVisitor<Object> loader;
     
     public static void runCommand (String command) {
         System.out.println(command);
@@ -26,10 +26,9 @@ public class Interpreter {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         MySQLParser parser = new MySQLParser(tokens);
         ParseTree tree = parser.commands();
-        MyVisitor<Object> loader = new MyVisitor<>();
+        if (loader == null)
+            loader = new MyVisitor<>();
         loader.visit(tree);
-        
-        result = new QueryResult();
     }
     
     public static void main(String[] args) throws IOException{
