@@ -3,6 +3,87 @@ lexer grammar MySQLLexer;
 @ header { 
  }
 
+
+// Start mysql-tutor
+
+CREATE
+    : 'create'
+    ;
+
+TABLE
+    : 'table'
+    ;
+
+IF
+    : 'if'
+    ;
+
+INT_DT
+    : 'int'
+    ;
+
+DOUBLE_DT
+    : 'double'
+    ;
+
+DATE_DT
+    : 'date'
+    ;
+
+VARCHAR_DT
+    : 'varchar'
+    ;
+
+BLOB_DT
+    : 'blob'
+    ;
+
+PRIMARY
+    : 'primary'
+    ;
+
+AUTO
+    : 'auto'
+    ;
+
+INCREMENT
+    : 'increment'
+    ;
+
+DROP
+    : 'drop'
+    ;
+
+INSERT
+    : 'insert'
+    ;
+
+INTO
+    : 'into'
+    ;
+
+VALUES
+    : 'values'
+    ;
+
+UPDATE
+    : 'update'
+    ;
+
+SET
+    : 'set'
+    ;
+
+DELETE
+    : 'delete'
+    ;
+
+AS
+    : 'as'
+    ;
+// End mysql-tutor
+
+
 SELECT
    : 'select'
    ;
@@ -78,7 +159,19 @@ FALSE
    ;
 
 
-DIVIDE
+SUM
+    : '+'
+    ;
+
+RES
+    : '-'
+    ;
+
+MUL
+    : '*'
+    ;
+
+DIV
    : 'div' | '/'
    ;
 
@@ -148,9 +241,9 @@ ESCAPE
    ;
 
 
-ASTERISK
-   : '*'
-   ;
+//ASTERISK
+//   : '*'
+//   ;
 
 
 RPAREN
@@ -298,14 +391,14 @@ USE
    ;
 
 
-IGNORE
-   : 'ignore'
-   ;
+//IGNORE
+//   : 'ignore'
+//   ;
 
 
-PARTITION
-   : 'partition'
-   ;
+//PARTITION
+//   : 'partition'
+//   ;
 
 
 STRAIGHT_JOIN
@@ -328,9 +421,13 @@ RIGHT
    ;
 
 
-OJ
-   : 'oj'
-   ;
+SHOW
+    : 'show'
+    ;
+
+TABLES
+    : 'tables'
+    ;
 
 
 ON
@@ -339,25 +436,38 @@ ON
 
 
 ID
-   : ( 'a' .. 'z' | 'A' .. 'Z' | '_' )+
+   : ( LETTER | '_' )+(DOT? (LETTER | INT | '_'))*
    ;
 
+LETTER
+    : 'a' .. 'z' | 'A' .. 'Z'
+    ;
 
 INT
    : '0' .. '9'+
    ;
+
+DOUBLE
+    : INT DOT INT
+    ;
+
+STRING
+    : ('\'' | '"') ~['\'"']* ('\'' | '"')
+    ;
 
 
 NEWLINE
    : '\r'? '\n' -> skip
    ;
 
+//LINE_COMMENT
+//   : '//' ~[\r\n]* -> skip ;
 
 WS
    : ( ' ' | '\t' | '\n' | '\r' )+ -> skip
    ;
 
-
+/*
 USER_VAR
    : '@' ( USER_VAR_SUBFIX1 | USER_VAR_SUBFIX2 | USER_VAR_SUBFIX3 | USER_VAR_SUBFIX4 )
    ;
@@ -381,3 +491,4 @@ fragment USER_VAR_SUBFIX3
 fragment USER_VAR_SUBFIX4
    : ( 'A' .. 'Z' | 'a' .. 'z' | '_' | '$' | '0' .. '9' | DOT )+
    ;
+*/
