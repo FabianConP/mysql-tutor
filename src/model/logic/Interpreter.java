@@ -41,23 +41,37 @@ public class Interpreter {
         temp.add("Milder");
         temp.add("Hernandez");
         temp.add("milderhc");
+        ArrayList<Object> temp1 = new ArrayList<>();
+        temp1.add("XXXXXX");
+        temp1.add("ASDASD");
+        temp1.add("ADSDFA");
+        ArrayList<Object> temp2 = new ArrayList<>();
+        temp2.add("AAAAAASD");
+        temp2.add("//////////");
+        temp2.add(",,,,,,,,");
         
         SingleResult row = new SingleResult(temp, "no transtalation", true);
+        SingleResult row2 = new SingleResult(temp1, "no transtalation", false);
+        SingleResult row3 = new SingleResult(temp2, "no transtalation", true);
         ArrayList<SingleResult> data = new ArrayList<>();
         data.add(row);
+        data.add(row2);
+        data.add(row3);
         data.add(row);
+        data.add(row2);
+        data.add(row3);
         data.add(row);
+        data.add(row2);
+        data.add(row3);
         data.add(row);
+        data.add(row2);
+        data.add(row3);
         data.add(row);
-        data.add(row);
+        data.add(row2);
         
-        if (command.equals("xd"))
-            result.setType(QueryResult.Type.SELECT);
-        else
-            result.setType(QueryResult.Type.CREATE);
+        result.setType(QueryResult.Type.SELECT);
         result.setColumns(columnNames);
         result.setResults(data);
-        
     }
     
     public static void main(String[] args) throws IOException{

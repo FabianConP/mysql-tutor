@@ -59,8 +59,10 @@ public class SelectView extends View {
         for (currentRowAnimation = startingRowAnimation; 
                 currentRowAnimation < results.size(); ++currentRowAnimation) {
             SingleResult r = results.get(currentRowAnimation);
+           
             crossManagement.markRow(currentRowAnimation, STYLE_BLUE);
             Thread.sleep(miliSeconds);
+            
             if ( r.isSuccessful() ) {
                 crossManagement.markRow(currentRowAnimation, STYLE_OCEAN);
                 finalManagement.addRow(new Field(r.getData()));
@@ -68,9 +70,10 @@ public class SelectView extends View {
                 Thread.sleep(miliSeconds);
             } else {
                 crossManagement.markRow(currentRowAnimation, STYLE_CHILLI);
+                Thread.sleep(miliSeconds);
             }
-        }
-        
+        }  
+       
         crossManagement.markRow(crossManagement.getData().size(), null);
         finalManagement.markRow(finalManagement.getData().size(), null);
     }
